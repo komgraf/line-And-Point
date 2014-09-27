@@ -1,63 +1,234 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Line And Point</title>
-        <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
-        <link href="css/style.css" rel="stylesheet" />
-    </head>
+  <head>
+    <title>Line And Point</title>
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/simple-sidebar.css" rel="stylesheet" />
+  </head>
 
-    <body>
-        <div class="wrapper">
-            <canvas id="myCanvas" class="canvas-style" width="650" height="650">
-                Your browser does not support the HTML5 canvas tag.
-            </canvas>
-            <div id="input-group">
-                <div class="input-style">Titik A</div>
-                <input id="inputX1" type="text" class="form-control input-style" placeholder="input x1" />
-                <input id="inputY1" type="text" class="form-control input-style" placeholder="input y1" />
-                <button id="buttonTitik1" class="btn btn-primary input-style">+</button>
-                
-                <div class="clear"></div>
-                <div class="input-style">Titik B</div>
-                <input id="inputX2" type="text" class="form-control input-style" placeholder="input x2" />
-                <input id="inputY2" type="text" class="form-control input-style" placeholder="input y2" />
-                <button id="buttonTitik2" class="btn btn-primary input-style">+</button>
-                
-                <div class="clear"></div>
-                <button id="buttonGaris" class="btn btn-op btn-primary input-style">Tambah Garis</button>
-                <button id="buttonAddition" class="btn btn-op btn-primary input-style">Addition</button>
-                <button id="buttonSubtraction" class="btn btn-op btn-primary input-style">Subtraction</button>
-                
-                <div class="clear"></div>
-                <div class="input-style">Refleksi</div>
-                <button id="buttonRefXAxis" class="btn btn-op btn-primary input-style">Refleksi X-axis</button>
-                <button id="buttonRefYAxis" class="btn btn-op btn-primary input-style">Refleksi Y-axis</button>
-                <button id="buttonRefCenter" class="btn btn-op btn-primary input-style">Refleksi 0,0</button>
-                <input id="inputRefX" type="text" class="form-control input-style" placeholder="refleksi garis X" />
-                <button id="buttonRefX" class="btn btn-primary input-style">+</button>
-                <input id="inputRefY" type="text" class="form-control input-style" placeholder="refleksi garis Y" />
-                <button id="buttonRefY" class="btn btn-primary input-style">+</button>
-                <input id="inputRefXY1" type="text" class="form-control input-style2" placeholder="refleksi X" />
-                <input id="inputRefXY2" type="text" class="form-control input-style2" placeholder="refleksi Y" />
-                <button id="buttonRefXY" class="btn btn-primary input-style">+</button>
-                
-                <div class="clear"></div>
-                <label id="lblPanjang" class="label input-style"></label>
-                <button id="reset" class="btn btn-op btn-warning input-style">Reset</button>
-                
+  <body>
+    <div id="wrapper">
+
+      <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="menublock">
+            <a><h3>Komgraf V0.0.3</h3></a>
+          </li>
+          <li>
+            <a href="#point-and-line" class="page-choose">
+              <span>1. Point and Line </span>
+            </a>
+          </li>
+          <li>
+            <a href="#transformasi" class="page-choose">
+              <span>2. Transformasi </span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="page-choose">
+              <span>3.  </span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="page-choose">
+              <span>4.  </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <div class="panel-title">
+                <button style="float: left" type="button" class="btn btn-info btn-lg" id="menu-toggle">
+                  <span class="glyphicon glyphicon-th-list"></span>
+                </button>
+                <h3 style="text-align: center">KOMGRAF</h3>
+              </div>
+              <div class="clear"></div>
             </div>
-<!--            <div class="input-group">
-                
-                <input id="input" type="text" class="form-control input-style" placeholder="input x" />
-                <input id="input1" type="text" class="form-control input-style" placeholder="input y" />
-                <button id="button2" class="btn btn-primary input-style">Tambah Garis</button>
-            </div>-->
-           
-        </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <canvas id="myCanvas" class="canvas-style" width="650" height="650">
+                    Your browser does not support the HTML5 canvas tag.
+                  </canvas>
+                </div>
 
-        <script src="js/line.js" type="text/javascript">
-        </script>
-    </body>
+                <!--TABS FOR LINE AND POINT-->
+                <div id="point-and-line">
+                  <div class="col-lg-6">
+                    <!-- Nav tabs -->
+                    <ul id="myTab" class="nav nav-tabs" role="tablist">
+                      <li class="active"><a href="#Membuat_Garis" role="tab" data-toggle="tab">Membuat Garis</a></li>
+                      <li><a href="#sud_add" role="tab" data-toggle="tab">Addition dan Subtraction</a></li>
+                      <li><a href="#Reflection" role="tab" data-toggle="tab">Relection</a></li>
+                    </ul>
+                    <div class="col-lg-6">
+                      <div>Titik A</div>
+                      <div class="row row2">
+                        <div class="col-lg-8">
+                          <input id="inputX1" type="text" class="form-control " placeholder="input x1" />
+                          <br>
+                          <input id="inputY1" type="text" class="form-control" placeholder="input y1" />
+                          <!--</div>-->
+                        </div>
+                        <div class="col-lg-4">
+                          <button id="buttonTitik1" style="line-height: 3.5" class="btn btn-primary btn-block btn-lg">
+                            <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div>Titik B</div>
+                      <div class="row row2">
+                        <div class="col-lg-8">
+                          <input id="inputX2" type="text" class="form-control " placeholder="input x2" />
+                          <br>
+                          <input id="inputY2" type="text" class="form-control" placeholder="input y2" />
+                          <!--</div>-->
+                        </div>
+                        <div class="col-lg-4">
+                          <button id="buttonTitik2" style="line-height: 3.5" class="btn btn-primary btn-block btn-lg">
+                            <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Tab panes -->
+                    <div id="myTabContent" class="tab-content">
+                      <div class="tab-pane fade in active" id="Membuat_Garis">
+
+                        <div class="col-lg-12"><br></div>
+                        <div class="col-lg-12">
+
+                          <button id="buttonGaris" class="btn btn-primary btn-block">Tambah Garis</button>
+                        </div>
+                      </div>
+                      <!--END OF HOME-->
+
+                      <div class="tab-pane fade" id="sud_add">
+                        <div class="col-lg-12"><br></div>
+                        <div class="col-lg-12">
+                          <button id="buttonAddition" class="btn btn-primary btn-block">Addition</button>
+                          <button id="buttonSubtraction" class="btn btn-primary btn-block">Subtraction</button>
+                        </div>
+                      </div>
+                      <!--END OF SUB AND ADD-->
+
+                      <div class="tab-pane fade" id="Reflection">
+                        <div class="col-lg-12"><br></div>
+                        <div class="col-lg-12">
+                          <div class="btn-block">Refleksi</div>
+                          <button id="buttonRefXAxis" class="btn btn-primary btn-block">Refleksi X-axis</button>
+                          <button id="buttonRefYAxis" class="btn btn-primary btn-block">Refleksi Y-axis</button>
+                          <button id="buttonRefCenter" class="btn btn-primary btn-block">Refleksi 0,0</button>
+                          <br>
+                          <div class="input-group">
+                            <input id="inputRefX" type="text" class="form-control btn-block" placeholder="refleksi garis X" />
+                            <div class="input-group-btn">
+                              <button id="buttonRefX" class="btn btn-primary btn-block">
+                                <span class="glyphicon glyphicon-plus"></span> Tambah Refleksi Terhadap X
+                              </button>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="input-group">
+                            <input id="inputRefY" type="text" class="form-control btn-block" placeholder="refleksi garis Y" />
+                            <div class="input-group-btn">
+                              <button id="buttonRefY" class="btn btn-primary btn-block">
+                                <span class="glyphicon glyphicon-plus"></span> Tambah Refleksi Terhadap Y
+                              </button>
+                            </div>
+                          </div>
+                          <br>
+                          <div>Refleksi Terhadap X dan Y </div>
+                          <div class="row row2">
+                            <div class="col-lg-8">
+                              <input id="inputRefXY1" type="text" class="form-control " placeholder="refleksi X" />
+                              <br>
+                              <input id="inputRefXY2" type="text" class="form-control" placeholder="refleksi Y" />
+                            </div>
+                            <div class="col-lg-4">
+                              <button id="buttonRefXY" style="line-height: 3.5" class="btn btn-primary btn-block btn-lg">
+                                <span class="glyphicon glyphicon-plus"></span> 
+                              </button>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="settings">...</div>
+                    </div>
+
+                    <div class="col-lg-6">
+                      <label id="lblPanjang" class="label btn-block"></label>
+                    </div>                 
+                  </div>
+                </div>
+                <!--END OF TABS LINE AND POINT-->
+
+                <!--TABS FOR TRANSFORMASI-->
+                <div id="transformasi">
+                  <div class="col-lg-6">
+                    <!--Untuk Tabs-->
+                    <ul id="myTab" class="nav nav-tabs" role="tablist">
+                      <li class="active"><a href="#translasi" role="tab" data-toggle="tab">Translasi</a></li>
+                      <li><a href="#shear" role="tab" data-toggle="tab">Shear</a></li>
+                    </ul>
+                    
+                    <!--UNTUK MEMULAI CONTENT YANG TETAP DISETIAP TABS-->
+                    <div class="col-lg-12">
+                                            
+                    </div>
+                    
+                    <!-- UNTUK CONTENT YANG ADA TIAP TAB -->
+                    <div class="tab-content">
+                      <!--ID PER PANE HARUS SAMA DENGAN HREF YANG DI TAB-->
+                      <div class="tab-pane fade in active" id="translasi"> 
+
+                      </div>
+                      <!--END OF 1st pane-->
+
+                      <div class="tab-pane fade" id="shear">
+                       
+                      </div>
+                      <!--END OF 2nd pane-->
+
+                    </div>
+                
+                  </div>
+                </div>
+                <!--END OF TRANSFORMASI-->
+
+
+
+                <div class="col-lg-12">
+                  <button id="reset" class="btn btn-warning btn-block btn-lg">Reset</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="js/GridClass.js" type="text/javascript"></script>
+    <script src="js/line.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/komgraf.js" type="text/javascript"></script>
+    <script>
+      $("#wrapper").toggleClass("toggled");
+      $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+      });
+    </script>
+  </body>
 </html>
 
 

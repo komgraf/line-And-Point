@@ -7,7 +7,7 @@ and open the template in the editor.
     Created on : Sep 14, 2014, 8:25:12 PM
     Author     : juliardi
 */
-/*@import "bootstrap.min.css";*/
+@import "bootstrap.min.css";
 
 * {
     margin: 0px auto;
@@ -26,12 +26,22 @@ and open the template in the editor.
     border: 1px solid #888;
 }
 
-.input-style {
+.row .row2{
+    display: table;
+}
+
+.row .row2 [class*="col-"] {
+    float: none;
+    display: table-cell;
+    vertical-align: top;
+}
+
+/*.input-style {
     width: 78%;
     float: left;
     margin-top: 15px;
     margin-bottom: -7px;
-}
+}*/
 
 .input-style2 {
     width: 35%;
@@ -52,14 +62,18 @@ and open the template in the editor.
     overflow: auto;
     width: 960px;
 }
-
-#input-group {
+canvas {
+  /*background-color: blue;*/ 
+  width: 100%;
+  height: auto;
+}
+/*#input-group {
     width: 260px;
     float: left;
-    /*margin-right: 25px;*/
-}
+    margin-right: 25px;
+}*/
 
-.btn {
+/*.btn {
     width: auto;
     padding: 4px 6.5px;
     margin-left: 6px;
@@ -79,7 +93,7 @@ and open the template in the editor.
 
 .btn-warning {
     background: #DDD;
-}
+}*/
 
 .label {
     width: 100%;
@@ -91,4 +105,12 @@ and open the template in the editor.
 
 #reset {
     margin-top: 15px;
+}
+.column_left{
+    float:left;
+    width:31.3%;
+}
+
+#transformasi{
+    display: none;
 }
