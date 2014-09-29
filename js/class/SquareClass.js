@@ -10,7 +10,7 @@
  * @param {double} y Koordinat sumbu Y titik pojok kiri atas segiempat
  * @param {double} width Lebar segiempat
  * @param {double} height Tinggi segiempat
- * @param {type} isReal True, nilai x dan y merupakan koordinat canvas <br>
+ * @param {boolean} isReal True, nilai x dan y merupakan koordinat canvas <br>
  * False, Nilai x dan y merupakan koordinat Grid
  * @param {string} lineColor Warna garis luar segiempat
  * @param {string} fillColor Warna segiempat. Isi dengan <code>undefined</code>
