@@ -142,6 +142,9 @@ function init() {
             input[z].value = "";
         }
     };
+    
+    //listener untuk dot product
+    var dot = get('buttonDotProduct');
 }
 
 function get(id) {
