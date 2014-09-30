@@ -288,7 +288,7 @@ function init() {
         var inputlingkaranY1 = get('inputlingkaranY1').value;
         var inputlingkaranradius = get('inputlingkaranradius').value;
 
-        var shape = new Circle(inputlingkaranX1, inputlingkaranY1, inputlingkaranradius, 0, 0, false);
+        var shape = new Circle(inputlingkaranX1, inputlingkaranY1, inputlingkaranradius, 0, 360, false);
         shape.draw(grid);
         lingkaran = shape;
     };
