@@ -60,3 +60,39 @@ Triangle.prototype.translate = function(xt, yt, gridObject) {
     var tri = new Triangle(pA, pB, pC, this.lineColor, this.fillColor);
     tri.draw(gridObject);
 };
+
+/**
+ * Method untuk melakukan shear pada segitiga terhadap sumbu x
+ * @param {double} shx
+ * @param {double} yref
+ * @param {Grid} gridObject
+ * @description rumusnya : X’ = x + shx(y – yref), Y’ = Y
+ * @author Umam
+ */
+Triangle.prototype.shearX = function(shx, yref, gridObject) {
+
+    var pA = new Point(this.pointA.x + (shx * (this.pointA.y-yref)), this.pointA.y, this.pointA.isReal, this.pointA.name, this.pointA.color);
+    var pB = new Point(this.pointB.x + (shx * (this.pointB.y-yref)), this.pointB.y, this.pointB.isReal, this.pointB.name, this.pointB.color);
+    var pC = new Point(this.pointC.x + (shx * (this.pointC.y-yref)), this.pointC.y, this.pointC.isReal, this.pointC.name, this.pointC.color);
+    
+    var tri = new Triangle(pA, pB, pC, this.lineColor, this.fillColor);
+    tri.draw(gridObject);
+};
+
+/**
+ * Method untuk melakukan shear pada segitiga terhadap sumbu y
+ * @param {double} shy
+ * @param {double} xref
+ * @param {Grid} gridObject
+ * @description rumusnya : X’ = X, Y’ = shy(X – Xref) + Y
+ * @author Umam
+ */
+Triangle.prototype.shearY = function(shy, xref, gridObject) {
+
+    var pA = new Point(this.pointA.x, this.pointA.y+ (shy * (this.pointA.x-xref)), this.pointA.isReal, this.pointA.name, this.pointA.color);
+    var pB = new Point(this.pointB.x, this.pointB.y+ (shy * (this.pointB.x-xref)), this.pointB.isReal, this.pointB.name, this.pointB.color);
+    var pC = new Point(this.pointC.x, this.pointC.y+ (shy * (this.pointC.x-xref)), this.pointC.isReal, this.pointC.name, this.pointC.color);
+    
+    var tri = new Triangle(pA, pB, pC, this.lineColor, this.fillColor);
+    tri.draw(gridObject);
+};

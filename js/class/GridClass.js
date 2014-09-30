@@ -264,7 +264,7 @@ Grid.prototype.dotProduct = function( lineA, lineB ) {
     var ay = lineA.pointB.y>lineA.pointA.y? Math.abs(lineA.pointB.y-lineA.pointA.y): Math.abs(lineA.pointB.y-lineA.pointA.y)*-1;
     var bx = lineB.pointB.x>lineB.pointA.x? Math.abs(lineB.pointB.x-lineB.pointA.x): Math.abs(lineB.pointB.x-lineB.pointA.x)*-1;
     var by = lineB.pointB.y>lineB.pointA.y? Math.abs(lineB.pointB.y-lineB.pointA.y): Math.abs(lineB.pointB.y-lineB.pointA.y)*-1;
-    dotProduct2( ax, ay, bx, by );
+    return this.dotProduct2( ax, ay, bx, by );
 };
 
 //menghitung dot product
@@ -278,7 +278,7 @@ Grid.prototype.crossProduct = function( lineA, lineB ) {
     var ay = lineA.pointB.y>lineA.pointA.y? Math.abs(lineA.pointB.y-lineA.pointA.y): Math.abs(lineA.pointB.y-lineA.pointA.y)*-1;
     var bx = lineB.pointB.x>lineB.pointA.x? Math.abs(lineB.pointB.x-lineB.pointA.x): Math.abs(lineB.pointB.x-lineB.pointA.x)*-1;
     var by = lineB.pointB.y>lineB.pointA.y? Math.abs(lineB.pointB.y-lineB.pointA.y): Math.abs(lineB.pointB.y-lineB.pointA.y)*-1;
-    dotProduct2( ax, ay, bx, by );
+    this.crossProduct2( ax, ay, bx, by );
 };
 
 //menghitung cross product
