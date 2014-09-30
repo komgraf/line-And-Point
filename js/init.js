@@ -8,6 +8,8 @@
 window.onload = init;
 var scale = 25;
 var p1, p2, line1, line2; //input e tlg ditambahi yakk
+//nyohhhhhhhh mam
+//di ironman panas sekali, telanjang dada sekalipun masih gerah
 
 function init() {
     var canvas = get('myCanvas');
