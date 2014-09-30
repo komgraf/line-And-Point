@@ -1,27 +1,18 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Constructor class Square
- * @param {double} x Koordinat sumbu X titik pojok kiri atas segiempat
- * @param {double} y Koordinat sumbu Y titik pojok kiri atas segiempat
- * @param {double} width Lebar segiempat
- * @param {double} height Tinggi segiempat
- * @param {boolean} isReal True, nilai x dan y merupakan koordinat canvas <br>
- * False, Nilai x dan y merupakan koordinat Grid
+ * @param {Point} pointA
+ * @param {Point} pointB
+ * @param {Point} pointC
+ * @param {Point} pointD
  * @param {string} lineColor Warna garis luar segiempat
  * @param {string} fillColor Warna segiempat. Isi dengan <code>undefined</code>
  * untuk membuat segiempat polos
  */
-function Square(x, y, width, height, isReal, lineColor, fillColor) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.isReal = isReal;
+function Square(pointA, pointB, pointC, pointD, lineColor, fillColor) {
+    this.pointA = pointA;
+    this.pointB = pointB;
+    this.pointC = pointC;
+    this.pointD = pointD;
     this.lineColor = (lineColor === undefined) ? "#000" : lineColor;
     this.fillColor = fillColor;
 }
@@ -31,23 +22,29 @@ function Square(x, y, width, height, isReal, lineColor, fillColor) {
  * @param {Grid} gridObject
  */
 Square.prototype.draw = function(gridObject) {
+    
+    this.pointA.draw(gridObject);
+    this.pointB.draw(gridObject);
+    this.pointC.draw(gridObject);
+    this.pointD.draw(gridObject);
+    
+    var x1 = (this.pointA.isReal) ? this.pointA.x : gridObject.convertX(this.pointA.x);
+    var y1 = (this.pointA.isReal) ? this.pointA.y : gridObject.convertY(this.pointA.y);
+    var x2 = (this.pointB.isReal) ? this.pointB.x : gridObject.convertX(this.pointB.x);
+    var y2 = (this.pointB.isReal) ? this.pointB.y : gridObject.convertY(this.pointB.y);
+    var x3 = (this.pointC.isReal) ? this.pointC.x : gridObject.convertX(this.pointC.x);
+    var y3 = (this.pointC.isReal) ? this.pointC.y : gridObject.convertY(this.pointC.y);
+    var x4 = (this.pointD.isReal) ? this.pointD.x : gridObject.convertX(this.pointD.x);
+    var y4 = (this.pointD.isReal) ? this.pointD.y : gridObject.convertY(this.pointD.y);
+    
     var ctx = gridObject.ctx;
-
-    if (this.isReal) {
-        var x = this.x;
-        var y = this.y;
-        var width = this.width;
-        var height = this.height;
-    } else {
-        var x = gridObject.convertX(this.x);
-        var y = gridObject.convertY(this.y);
-        var width = gridObject.convert(this.width);
-        var height = gridObject.convert(this.height);
-    }
-
+    ctx.lineColor = this.lineColor;
     ctx.beginPath();
-    ctx.strokeStyle = this.lineColor;
-    ctx.rect(x, y, width, height);
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.lineTo(x4, y4);
+    ctx.closePath();
     ctx.stroke();
     
     if(this.fillColor !== undefined) {
@@ -58,23 +55,6 @@ Square.prototype.draw = function(gridObject) {
 };
 
 /**
- * Method untuk menghitung luas segiempat
- * @param {Grid} gridObject
- * @returns {double} Luas segiempat
- */
-Square.prototype.wide = function(gridObject) {
-    if (this.isReal) {
-        var width = gridObject.convert(this.width);
-        var height = gridObject.convert(this.height);        
-    } else {
-        var width = this.width;
-        var height = this.height;
-    }
-    
-    return (width * height);
-};
-
-/**
  * Method untuk melakukan translasi pada segiempat
  * @param {double} xt
  * @param {double} yt
@@ -82,8 +62,12 @@ Square.prototype.wide = function(gridObject) {
  */
 Square.prototype.translate = function(xt, yt, gridObject) {
     
-    var sq = new Square(this.x + xt, this.y + yt, this.width, this.height,
-    this.isReal, this.lineColor, this.fillColor);
+    var pA = new Point(this.pointA.x + xt, this.pointA.y + yt, this.pointA.isReal);
+    var pB = new Point(this.pointB.x + xt, this.pointB.y + yt, this.pointB.isReal);
+    var pC = new Point(this.pointC.x + xt, this.pointC.y + yt, this.pointC.isReal);
+    var pD = new Point(this.pointD.x + xt, this.pointD.y + yt, this.pointD.isReal);
+    
+    var sq = new Square(pA, pB, pC, pD, this.lineColor, this.fillColor);
     
     sq.draw(gridObject);
 };
