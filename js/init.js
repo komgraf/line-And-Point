@@ -303,5 +303,4 @@ function init() {
 
 function get(id) {
     return document.getElementById(id);
->>>>>>> origin/master
 }
