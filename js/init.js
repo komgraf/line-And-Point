@@ -7,7 +7,7 @@
 
 window.onload = init;
 var scale = 25;
-var p1, p2, line;
+var p1, p2, line1, line2; //input e tlg ditambahi yakk
 
 function init() {
     var canvas = get('myCanvas');
@@ -40,85 +40,85 @@ function init() {
     var b1 = get('buttonGaris');
     b1.onclick = function() {
         if (p1 !== null && p2 !== null) {
-            line = new Line(p1, p2, false, true);
-            line.draw(grid);
+            line1 = new Line(p1, p2, false, true);
+            line1.draw(grid);
             var label = get('lblPanjang');
-            label.innerHTML = "Panjang garis : " + line.length(grid);
+            label.innerHTML = "Panjang garis : " + line1.length(grid);
         }
     };
 
     //listener untuk addition p2+p1
     var b2 = get('buttonAddition');
     b2.onclick = function() {
-        if (line !== null) {
-            grid.lineAddition(line);
+        if (line1 !== null) {
+            grid.lineAddition(line1);
         }
     };
 
     //listener untuk subtraction p2-p1
     var b3 = get('buttonSubtraction');
     b3.onclick = function() {
-        if (line !== null) {
-            grid.lineSubtraction(line);
+        if (line1 !== null) {
+            grid.lineSubtraction(line1);
         }
     };
 
     //listener untuk refleksi garis terhadap sumbu X
     var brXA = get('buttonRefXAxis');
     brXA.onclick = function() {
-        if (line !== null) {
-            grid.reflectionXAxis(line);
+        if (line1 !== null) {
+            grid.reflectionXAxis(line1);
         }
     };
 
     //listener untuk refleksi garis terhadap sumbu Y
     var brYA = get('buttonRefYAxis');
     brYA.onclick = function() {
-        if (line !== null) {
-            grid.reflectionYAxis(line);
+        if (line1 !== null) {
+            grid.reflectionYAxis(line1);
         }
     };
 
     //listener untuk refleksi terhadap titik pusat
     var brC = get('buttonRefCenter');
     brC.onclick = function() {
-        if (line !== null) {
-            grid.reflectionCenter(line);
+        if (line1 !== null) {
+            grid.reflectionCenter(line1);
         }
     };
 
     //listener untuk refleksi terhadap garis sejajar sumbu Y
     var brX = get('buttonRefX');
     brX.onclick = function() {
-        if (line !== null) {
+        if (line1 !== null) {
             var x = get('inputRefX').value;
             
             var l1 = new Line(new Point(grid.convertX(x), 0, true), 
             new Point(grid.convertX(x), grid.canvas.height, true));
             l1.draw(grid);
             
-            grid.reflectionX(line, get('inputRefX').value);
+            grid.reflectionX(line1, get('inputRefX').value);
         }
     };
 
     //listener untuk refleksi terhadap garis sejajar sumbu X
     var brY = get('buttonRefY');
     brY.onclick = function() {
-        if (line !== null) {
+        if (line1 !== null) {
             var y = get('inputRefY').value;
             
             var l1 = new Line(new Point(0, grid.convertY(y), true), 
             new Point(grid.canvas.width, grid.convertY(y), true));
             l1.draw(grid);
             
-            grid.reflectionY(line, get('inputRefY').value);
+            grid.reflectionY(line1, get('inputRefY').value);
         }
     };
 
     //listener untuk refleksi terhadap titik
     var brXY = get('buttonRefXY');
     brXY.onclick = function() {
-        if (line !== null) {
+        if (line1 !== null) {
             var xy1 = get('inputRefXY1').value;
             var xy2 = get('inputRefXY2').value;
             
@@ -130,7 +130,7 @@ function init() {
             new Point(grid.canvas.width, grid.convertY(xy2), true));
             l2.draw(grid);
             
-            grid.reflectionXY(line, xy1, xy2);
+            grid.reflectionXY(line1, xy1, xy2);
         }
     };
 
@@ -139,7 +139,7 @@ function init() {
     br.onclick = function() {
         p1 = null;
         p2 = null;
-        line = null;
+        line1 = null;
         grid.clear();
      
         var inputgrup = document.getElementById('wrapper');
