@@ -120,7 +120,7 @@ function init() {
             var x = get('inputRefX').value;
 
             var l1 = new Line(new Point(grid.convertX(x), 0, true),
-                    new Point(grid.convertX(x), grid.canvas.height, true));
+                    new Point(grid.convertX(x), grid.canvas.height, true), false, false, "blue");
             l1.draw(grid);
 
             grid.reflectionX(line1, get('inputRefX').value);
@@ -134,7 +134,7 @@ function init() {
             var y = get('inputRefY').value;
 
             var l1 = new Line(new Point(0, grid.convertY(y), true),
-                    new Point(grid.canvas.width, grid.convertY(y), true));
+                    new Point(grid.canvas.width, grid.convertY(y), true), false, false, "blue");
             l1.draw(grid);
 
             grid.reflectionY(line1, get('inputRefY').value);
@@ -149,11 +149,11 @@ function init() {
             var xy2 = get('inputRefXY2').value;
 
             var l1 = new Line(new Point(grid.convertX(xy1), 0, true),
-                    new Point(grid.convertX(xy1), grid.canvas.height, true));
+                    new Point(grid.convertX(xy1), grid.canvas.height, true), false, false, "blue");
             l1.draw(grid);
 
             var l2 = new Line(new Point(0, grid.convertY(xy2), true),
-                    new Point(grid.canvas.width, grid.convertY(xy2), true));
+                    new Point(grid.canvas.width, grid.convertY(xy2), true), false, false, "blue");
             l2.draw(grid);
 
             grid.reflectionXY(line1, xy1, xy2);
