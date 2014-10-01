@@ -1,6 +1,6 @@
 window.onload = init;
 var scale = 25;
-var p1, p2, p3, p4, line1, line2, k1, k2, k3, k4, segi4, segi3, lingkaran;
+var p1, p2, p3, p4, line1, line2, segi4, segi3, lingkaran;
 
 function init() {
     var canvas = get('myCanvas');
@@ -166,6 +166,9 @@ function init() {
         p1 = null;
         p2 = null;
         line1 = null;
+        segi4 = null;
+        segi3 = null;
+        lingkaran = null;
         grid.clear();
 
         var inputgrup = document.getElementById('wrapper');
@@ -220,9 +223,16 @@ function init() {
         var inputTransXt = get('inputTranslasiXt').value;
         var inputTransYt = get('inputTranslasiYt').value;
 
-//        alert(inputTransYt);
-
         segi4.translate(inputTransXt, inputTransYt, grid);
+    };
+
+    //listener untuk scale kotak
+    var scaleKotak = get('buttonScalekotak');
+    scaleKotak.onclick = function() {
+        var inputScaleXt = get('inputScaleXt').value;
+        var inputScaleYt = get('inputScaleYt').value;
+
+        segi4.scale(inputScaleXt, inputScaleYt, grid);
     };
 
     //listener untuk shear kotak
@@ -266,6 +276,15 @@ function init() {
         var inputTransYt = get('inputTranslasiSegitigaYt').value;
 
         segi3.translate(inputTransXt, inputTransYt, grid);
+    };
+
+    //listener untuk scale segitiga
+    var scaleSegitiga = get('buttonscaleSegitiga');
+    scaleSegitiga.onclick = function() {
+        var inputScaleXt = get('inputScaleSegitigaXt').value;
+        var inputScaleYt = get('inputScaleSegitigaYt').value;
+
+        segi3.scale(inputScaleXt, inputScaleYt, grid);
     };
 
     //listener untuk shear segitiga
