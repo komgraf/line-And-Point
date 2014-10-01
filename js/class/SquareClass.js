@@ -62,10 +62,28 @@ Square.prototype.draw = function(gridObject) {
  */
 Square.prototype.translate = function(xt, yt, gridObject) {
 
-    var pA = new Point(this.pointA.x + xt, this.pointA.y + yt, this.pointA.isReal);
-    var pB = new Point(this.pointB.x + xt, this.pointB.y + yt, this.pointB.isReal);
-    var pC = new Point(this.pointC.x + xt, this.pointC.y + yt, this.pointC.isReal);
-    var pD = new Point(this.pointD.x + xt, this.pointD.y + yt, this.pointD.isReal);
+    var pA = new Point(this.pointA.x + parseFloat(xt), this.pointA.y + parseFloat(yt), this.pointA.isReal);
+    var pB = new Point(this.pointB.x + parseFloat(xt), this.pointB.y + parseFloat(yt), this.pointB.isReal);
+    var pC = new Point(this.pointC.x + parseFloat(xt), this.pointC.y + parseFloat(yt), this.pointC.isReal);
+    var pD = new Point(this.pointD.x + parseFloat(xt), this.pointD.y + parseFloat(yt), this.pointD.isReal);
+
+    var sq = new Square(pA, pB, pC, pD, this.lineColor, this.fillColor);
+
+    sq.draw(gridObject);
+};
+
+/**
+ * Method untuk melakukan scale pada segiempat
+ * @param {double} xt
+ * @param {double} yt
+ * @param {Grid} gridObject
+ */
+Square.prototype.scale = function(xt, yt, gridObject) {
+
+    var pA = new Point(this.pointA.x * parseFloat(xt), this.pointA.y * parseFloat(yt), this.pointA.isReal);
+    var pB = new Point(this.pointB.x * parseFloat(xt), this.pointB.y * parseFloat(yt), this.pointB.isReal);
+    var pC = new Point(this.pointC.x * parseFloat(xt), this.pointC.y * parseFloat(yt), this.pointC.isReal);
+    var pD = new Point(this.pointD.x * parseFloat(xt), this.pointD.y * parseFloat(yt), this.pointD.isReal);
 
     var sq = new Square(pA, pB, pC, pD, this.lineColor, this.fillColor);
 
