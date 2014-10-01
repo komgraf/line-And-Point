@@ -180,14 +180,16 @@ function init() {
     var dot = get('buttonDotProduct');
     dot.onclick = function() {
         var nilaiDot = grid.dotProduct(line1, line2);
-        var label = get('lblPanjang');
-        label.innerHTML = "Panjang Dot : " + nilaiDot;
+        var label = get('hasilDotProduct');
+        label.value = "Hasil Dot : " + nilaiDot;
     };
 
     //listener untuk melakukan crossproduct
     var cross = get('buttonCrossProduct');
     cross.onclick = function() {
-
+        var nilaiCross = grid.crossProduct(line1, line2);
+        var label = get('hasilCrossProduct');
+        label.value = "Hasil Cross : " + nilaiCross;
     };
 
     //listener untuk membuat segi Empat
