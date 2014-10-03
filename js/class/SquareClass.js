@@ -79,11 +79,14 @@ Square.prototype.translate = function(xt, yt, gridObject) {
  * @param {Grid} gridObject
  */
 Square.prototype.scale = function(xt, yt, gridObject) {
-
-    var pA = new Point(this.pointA.x * parseFloat(xt), this.pointA.y * parseFloat(yt), this.pointA.isReal);
-    var pB = new Point(this.pointB.x * parseFloat(xt), this.pointB.y * parseFloat(yt), this.pointB.isReal);
-    var pC = new Point(this.pointC.x * parseFloat(xt), this.pointC.y * parseFloat(yt), this.pointC.isReal);
-    var pD = new Point(this.pointD.x * parseFloat(xt), this.pointD.y * parseFloat(yt), this.pointD.isReal);
+    xt = Math.abs(xt);
+    yt = Math.abs(yt);
+    var dx = this.pointA.x * parseFloat(xt) - this.pointA.x;
+    var dy = this.pointA.y * parseFloat(yt) - this.pointA.y;
+    var pA = new Point(this.pointA.x * parseFloat(xt)-dx, this.pointA.y * parseFloat(yt)-dy, this.pointA.isReal, this.pointA.name+"'");
+    var pB = new Point(this.pointB.x * parseFloat(xt)-dx, this.pointB.y * parseFloat(yt)-dy, this.pointB.isReal, this.pointB.name+"'");
+    var pC = new Point(this.pointC.x * parseFloat(xt)-dx, this.pointC.y * parseFloat(yt)-dy, this.pointC.isReal, this.pointC.name+"'");
+    var pD = new Point(this.pointD.x * parseFloat(xt)-dx, this.pointD.y * parseFloat(yt)-dy, this.pointD.isReal, this.pointD.name+"'");
 
     var sq = new Square(pA, pB, pC, pD, this.lineColor, this.fillColor);
 
@@ -96,10 +99,13 @@ Square.prototype.scale = function(xt, yt, gridObject) {
  * @param {Grid} gridObject
  */
 Square.prototype.scaleUniform = function(t, gridObject) {
-    var pA = new Point(this.pointA.x * parseFloat(t), this.pointA.y * parseFloat(t), this.pointA.isReal);
-    var pB = new Point(this.pointB.x * parseFloat(t), this.pointB.y * parseFloat(t), this.pointB.isReal);
-    var pC = new Point(this.pointC.x * parseFloat(t), this.pointC.y * parseFloat(t), this.pointC.isReal);
-    var pD = new Point(this.pointD.x * parseFloat(t), this.pointD.y * parseFloat(t), this.pointD.isReal);
+    t = Math.abs(t);
+    var dx = this.pointA.x * parseFloat(t) - this.pointA.x;
+    var dy = this.pointA.y * parseFloat(t) - this.pointA.y;
+    var pA = new Point(this.pointA.x * parseFloat(t)-dx, this.pointA.y * parseFloat(t)-dy, this.pointA.isReal, this.pointA.name+"'");
+    var pB = new Point(this.pointB.x * parseFloat(t)-dx, this.pointB.y * parseFloat(t)-dy, this.pointB.isReal, this.pointB.name+"'");
+    var pC = new Point(this.pointC.x * parseFloat(t)-dx, this.pointC.y * parseFloat(t)-dy, this.pointC.isReal, this.pointC.name+"'");
+    var pD = new Point(this.pointD.x * parseFloat(t)-dx, this.pointD.y * parseFloat(t)-dy, this.pointD.isReal, this.pointD.name+"'");
 
     var sq = new Square(pA, pB, pC, pD, this.lineColor, this.fillColor);
 

@@ -71,10 +71,13 @@ Triangle.prototype.translate = function(xt, yt, gridObject) {
  * @param {Grid} gridObject
  */
 Triangle.prototype.scale = function(xt, yt, gridObject) {
-
-    var pA = new Point(this.pointA.x * parseFloat(xt), this.pointA.y * parseFloat(yt), this.pointA.isReal, this.pointA.name, this.pointA.color);
-    var pB = new Point(this.pointB.x * parseFloat(xt), this.pointB.y * parseFloat(yt), this.pointB.isReal, this.pointB.name, this.pointB.color);
-    var pC = new Point(this.pointC.x * parseFloat(xt), this.pointC.y * parseFloat(yt), this.pointC.isReal, this.pointC.name, this.pointC.color);
+    xt = Math.abs(xt);
+    yt = Math.abs(yt);
+    var dx = this.pointA.x * parseFloat(xt) - this.pointA.x;
+    var dy = this.pointA.y * parseFloat(yt) - this.pointA.y;
+    var pA = new Point(this.pointA.x * parseFloat(xt)-dx, this.pointA.y * parseFloat(yt)-dy, this.pointA.isReal, this.pointA.name+"'", this.pointA.color);
+    var pB = new Point(this.pointB.x * parseFloat(xt)-dx, this.pointB.y * parseFloat(yt)-dy, this.pointB.isReal, this.pointB.name+"'", this.pointB.color);
+    var pC = new Point(this.pointC.x * parseFloat(xt)-dx, this.pointC.y * parseFloat(yt)-dy, this.pointC.isReal, this.pointC.name+"'", this.pointC.color);
 
     var tri = new Triangle(pA, pB, pC, this.lineColor, this.fillColor);
     tri.draw(gridObject);
@@ -86,10 +89,12 @@ Triangle.prototype.scale = function(xt, yt, gridObject) {
  * @param {Grid} gridObject
  */
 Triangle.prototype.scaleUniform = function(t, gridObject) {
-    
-    var pA = new Point(this.pointA.x * parseFloat(t), this.pointA.y * parseFloat(t), this.pointA.isReal, this.pointA.name, this.pointA.color);
-    var pB = new Point(this.pointB.x * parseFloat(t), this.pointB.y * parseFloat(t), this.pointB.isReal, this.pointB.name, this.pointB.color);
-    var pC = new Point(this.pointC.x * parseFloat(t), this.pointC.y * parseFloat(t), this.pointC.isReal, this.pointC.name, this.pointC.color);
+    t = Math.abs(t);
+    var dx = this.pointA.x * parseFloat(t) - this.pointA.x;
+    var dy = this.pointA.y * parseFloat(t) - this.pointA.y;
+    var pA = new Point(this.pointA.x * parseFloat(t)-dx, this.pointA.y * parseFloat(t)-dy, this.pointA.isReal, this.pointA.name+"'", this.pointA.color);
+    var pB = new Point(this.pointB.x * parseFloat(t)-dx, this.pointB.y * parseFloat(t)-dy, this.pointB.isReal, this.pointB.name+"'", this.pointB.color);
+    var pC = new Point(this.pointC.x * parseFloat(t)-dx, this.pointC.y * parseFloat(t)-dy, this.pointC.isReal, this.pointC.name+"'", this.pointC.color);
 
     var tri = new Triangle(pA, pB, pC, this.lineColor, this.fillColor);
     tri.draw(gridObject);
