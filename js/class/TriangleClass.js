@@ -136,3 +136,91 @@ Triangle.prototype.shearY = function(shy, xref, gridObject) {
     var tri = new Triangle(pA, pB, pC, this.lineColor, this.fillColor);
     tri.draw(gridObject);
 };
+
+/**
+ * Method refleksi bidang terhadap sumbu X (y = 0)
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap sumbu X, dengan memanggil method reflectionY() karena refleksi sumbu X sama dengan refleksi terhadap garis y=0
+ */
+Triangle.prototype.reflectionXAxis = function( gridObject ) {
+    this.reflectionY( 0, gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap sumbu Y (x = 0)
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap sumbu Y, dengan memanggil method reflectionX() karena refleksi sumbu Y sama dengan refleksi terhadap garis x=0
+ */
+Triangle.prototype.reflectionYAxis = function( gridObject ) {
+    this.reflectionX( 0, gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap koordinat pusat (0,0)
+ * @param {Grid} gridObject
+ * @description melakuka refleksi bidang terhadap titik (0,0), dengan memanggil method reflectionXY() dengan parameter koordinat (0,0)
+ */
+Triangle.prototypr.reflectionCenter = function( gridObject ) {
+    this.reflectionXY( 0, 0, gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap garis x = n
+ * @param {float} n
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap garis x=n, di mana hanya absis masing-masing point bidang yang berubah. x' = n + (n - x) = 2n - x
+ */
+Triangle.prototype.reflectionX = function( n, gridObject ) {
+    var xA = 2 * n - parseFloat(this.pointA.x);
+    var xB = 2 * n - parseFloat(this.pointB.x);
+    var xC = 2 * n - parseFloat(this.pointC.x);
+    
+    var pA = new Point( xA, this.pointA.y, false, "A'" );
+    var pB = new Point( xB, this.pointB.y, false, "B'" );
+    var pC = new Point( xC, this.pointC.y, false, "C'" );
+    
+    var triangleR = new Triangle( pA, pB, pC, "blue", this.fillColor );
+    triangleR.draw( gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap garis y = n
+ * @param {float} n
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap garis y=n, di mana hanya ordinat masing-masing point bidang yang berubah. y' = n + (n - y) = 2n - y
+ */
+Triangle.prototype.reflectionY = function( n, gridObject ) {
+    var yA = 2 * n - parseFloat(this.pointA.y);
+    var yB = 2 * n - parseFloat(this.pointB.y);
+    var yC = 2 * n - parseFloat(this.pointC.y);
+    
+    var pA = new Point( this.pointA.x, yA, false, "A'" );
+    var pB = new Point( this.pointB.x, yB, false, "B'" );
+    var pC = new Point( this.pointC.x, yC, false, "C'" );
+    
+    var triangleR = new Triangle( pA, pB, pC, "blue", this.fillColor );
+    triangleR.draw( gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap titik x,y
+ * @param {float} x
+ * @param {float} y
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap titik (x,y), di mana koordinat masing-masing point bidang berubah. x' = n + (n - x) = 2n - x dan y' = n + (n - y) = 2n - y
+ */
+Triangle.prototype.reflectionXY = function( x, y, gridObject ) {
+    var xA = 2 * x - parseFloat(this.pointA.x);
+    var xB = 2 * x - parseFloat(this.pointB.x);
+    var xC = 2 * x - parseFloat(this.pointC.x);
+    var yA = 2 * y - parseFloat(this.pointA.y);
+    var yB = 2 * y - parseFloat(this.pointB.y);
+    var yC = 2 * y - parseFloat(this.pointC.y);
+    
+    var pA = new Point( xA, yA, false, "A'" );
+    var pB = new Point( xB, yB, false, "B'" );
+    var pC = new Point( xC, yC, false, "C'" );
+    
+    var triangleR = new Triangle( pA, pB, pC, "blue", this.fillColor );
+    triangleR.draw( gridObject );
+};
