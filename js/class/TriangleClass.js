@@ -65,7 +65,7 @@ Triangle.prototype.translate = function(xt, yt, gridObject) {
 };
 
 /**
- * Method untuk melakukan scalling pada segitiga
+ * Method untuk melakukan scalling pada segitiga (diferensial)
  * @param {double} xt
  * @param {double} yt
  * @param {Grid} gridObject
@@ -78,6 +78,22 @@ Triangle.prototype.scale = function(xt, yt, gridObject) {
 
     var tri = new Triangle(pA, pB, pC, this.lineColor, this.fillColor);
     tri.draw(gridObject);
+};
+
+/**
+ * Method untuk melakukan scaling pada segitiga (uniform)
+ * @param {double} t
+ * @param {Grid} gridObject
+ */
+Triangle.prototype.scaleUniform = function(t, gridObject) {
+    
+    var pA = new Point(this.pointA.x * parseFloat(t), this.pointA.y * parseFloat(t), this.pointA.isReal, this.pointA.name, this.pointA.color);
+    var pB = new Point(this.pointB.x * parseFloat(t), this.pointB.y * parseFloat(t), this.pointB.isReal, this.pointB.name, this.pointB.color);
+    var pC = new Point(this.pointC.x * parseFloat(t), this.pointC.y * parseFloat(t), this.pointC.isReal, this.pointC.name, this.pointC.color);
+
+    var tri = new Triangle(pA, pB, pC, this.lineColor, this.fillColor);
+    tri.draw(gridObject);
+    
 };
 
 /**

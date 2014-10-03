@@ -226,13 +226,21 @@ function init() {
         segi4.translate(inputTransXt, inputTransYt, grid);
     };
 
-    //listener untuk scale kotak
+    //listener untuk scale kotak (direfensial)
     var scaleKotak = get('buttonScalekotak');
     scaleKotak.onclick = function() {
         var inputScaleXt = get('inputScaleXt').value;
         var inputScaleYt = get('inputScaleYt').value;
 
         segi4.scale(inputScaleXt, inputScaleYt, grid);
+    };
+    
+    //listener untuk scale kotak (uniform)
+    var scaleKotakU = get('buttonScalekotakU');
+    scaleKotakU.onclick = function() {
+        var inputScaleT = get('inputScaleT').value;
+        
+        segi4.scaleUniform(inputScaleT, grid);
     };
 
     //listener untuk shear kotak
@@ -278,13 +286,21 @@ function init() {
         segi3.translate(inputTransXt, inputTransYt, grid);
     };
 
-    //listener untuk scale segitiga
+    //listener untuk scale segitiga (diferensial)
     var scaleSegitiga = get('buttonscaleSegitiga');
     scaleSegitiga.onclick = function() {
         var inputScaleXt = get('inputScaleSegitigaXt').value;
         var inputScaleYt = get('inputScaleSegitigaYt').value;
 
         segi3.scale(inputScaleXt, inputScaleYt, grid);
+    };
+    
+     //listener untuk scale segitiga (uniform)
+    var scaleSegitigaU = get('buttonScaleSegitigaU');
+    scaleSegitigaU.onclick = function () {
+        var inputScaleT = get('inputScaleSegitigaT').value;
+        
+        segi3.scaleUniform(inputScaleT, grid);
     };
 
     //listener untuk shear segitiga
