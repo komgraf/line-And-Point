@@ -160,7 +160,7 @@ Triangle.prototype.reflectionYAxis = function( gridObject ) {
  * @param {Grid} gridObject
  * @description melakuka refleksi bidang terhadap titik (0,0), dengan memanggil method reflectionXY() dengan parameter koordinat (0,0)
  */
-Triangle.prototypr.reflectionCenter = function( gridObject ) {
+Triangle.prototype.reflectionCenter = function( gridObject ) {
     this.reflectionXY( 0, 0, gridObject );
 };
 
@@ -168,7 +168,7 @@ Triangle.prototypr.reflectionCenter = function( gridObject ) {
  * Method refleksi bidang terhadap garis x = n
  * @param {float} n
  * @param {Grid} gridObject
- * @description melakukan refleksi bidang terhadap garis x=n, di mana hanya absis masing-masing point bidang yang berubah. x' = n + (n - x) = 2n - x
+ * @description melakukan refleksi bidang terhadap garis x=n, di mana hanya absis masing-masing point bidang yang berubah. ax' = n + (n - ax) = 2n - ax
  */
 Triangle.prototype.reflectionX = function( n, gridObject ) {
     var xA = 2 * n - parseFloat(this.pointA.x);
@@ -187,7 +187,7 @@ Triangle.prototype.reflectionX = function( n, gridObject ) {
  * Method refleksi bidang terhadap garis y = n
  * @param {float} n
  * @param {Grid} gridObject
- * @description melakukan refleksi bidang terhadap garis y=n, di mana hanya ordinat masing-masing point bidang yang berubah. y' = n + (n - y) = 2n - y
+ * @description melakukan refleksi bidang terhadap garis y=n, di mana hanya ordinat masing-masing point bidang yang berubah. ay' = n + (n - ay) = 2n - ay
  */
 Triangle.prototype.reflectionY = function( n, gridObject ) {
     var yA = 2 * n - parseFloat(this.pointA.y);
@@ -207,7 +207,7 @@ Triangle.prototype.reflectionY = function( n, gridObject ) {
  * @param {float} x
  * @param {float} y
  * @param {Grid} gridObject
- * @description melakukan refleksi bidang terhadap titik (x,y), di mana koordinat masing-masing point bidang berubah. x' = n + (n - x) = 2n - x dan y' = n + (n - y) = 2n - y
+ * @description melakukan refleksi bidang terhadap titik (x,y), di mana koordinat masing-masing point bidang berubah. ax' = n + (n - ax) = 2n - ax dan ay' = n + (n - ay) = 2n - ay
  */
 Triangle.prototype.reflectionXY = function( x, y, gridObject ) {
     var xA = 2 * x - parseFloat(this.pointA.x);

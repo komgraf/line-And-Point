@@ -123,7 +123,7 @@ function init() {
                     new Point(grid.convertX(x), grid.canvas.height, true), false, false, "blue");
             l1.draw(grid);
 
-            grid.reflectionX(line1, get('inputRefX').value);
+            grid.reflectionX(line1, x);
         }
     };
 
@@ -137,7 +137,7 @@ function init() {
                     new Point(grid.canvas.width, grid.convertY(y), true), false, false, "blue");
             l1.draw(grid);
 
-            grid.reflectionY(line1, get('inputRefY').value);
+            grid.reflectionY(line1, y);
         }
     };
 
@@ -328,6 +328,77 @@ function init() {
         var shape = new Circle(inputlingkaranX1, inputlingkaranY1, inputlingkaranradius, 0, 360, false);
         shape.draw(grid);
         lingkaran = shape;
+    };
+    
+    //listener untuk refleksi persegi terhadap sumbu X
+    var brXASquare = get('buttonRefXAxisSquare');
+    brXASquare.onclick = function() {
+        if (segi4 !== null) {
+            segi4.reflectionXAxis(grid);
+        }
+    };
+
+    //listener untuk refleksi persegi terhadap sumbu Y
+    var brYASquare = get('buttonRefYAxisSquare');
+    brYASquare.onclick = function() {
+        if (segi4 !== null) {
+            segi4.reflectionYAxis(grid);
+        }
+    };
+
+    //listener untuk refleksi persegi terhadap titik pusat
+    var brCSquare = get('buttonRefCenterSquare');
+    brCSquare.onclick = function() {
+        if (segi4 !== null) {
+            segi4.reflectionCenter(grid);
+        }
+    };
+
+    //listener untuk refleksi persegi terhadap garis sejajar sumbu Y
+    var brXSquare = get('buttonRefXSquare');
+    brXSquare.onclick = function() {
+        if (segi4 !== null) {
+            var x = get('inputRefXSquare').value;
+
+            var l1 = new Line(new Point(grid.convertX(x), 0, true),
+                    new Point(grid.convertX(x), grid.canvas.height, true), false, false, "blue");
+            l1.draw(grid);
+
+            segi4.reflectionX(x, grid);
+        }
+    };
+
+    //listener untuk refleksi persegi terhadap garis sejajar sumbu X
+    var brYSquare = get('buttonRefYSquare');
+    brYSquare.onclick = function() {
+        if (segi4 !== null) {
+            var y = get('inputRefYSquare').value;
+
+            var l1 = new Line(new Point(0, grid.convertY(y), true),
+                    new Point(grid.canvas.width, grid.convertY(y), true), false, false, "blue");
+            l1.draw(grid);
+
+            segi4.reflectionY(y, grid);
+        }
+    };
+
+    //listener untuk refleksi persegi terhadap titik
+    var brXYSquare = get('buttonRefXYSquare');
+    brXYSquare.onclick = function() {
+        if (segi4 !== null) {
+            var xy1 = get('inputRefXY1Square').value;
+            var xy2 = get('inputRefXY2Square').value;
+
+            var l1 = new Line(new Point(grid.convertX(xy1), 0, true),
+                    new Point(grid.convertX(xy1), grid.canvas.height, true), false, false, "blue");
+            l1.draw(grid);
+
+            var l2 = new Line(new Point(0, grid.convertY(xy2), true),
+                    new Point(grid.canvas.width, grid.convertY(xy2), true), false, false, "blue");
+            l2.draw(grid);
+
+            segi4.reflectionXY(xy1, xy2, grid);
+        }
     };
 }
 

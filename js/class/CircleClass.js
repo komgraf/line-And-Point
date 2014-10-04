@@ -80,3 +80,71 @@ Circle.prototype.translate = function(xt, yt, gridObject) {
     
     c.draw(gridObject);
 };
+
+/**
+ * Method refleksi bidang terhadap sumbu X (y = 0)
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap sumbu X, dengan memanggil method reflectionY() karena refleksi sumbu X sama dengan refleksi terhadap garis y=0
+ */
+Circle.prototype.reflectionXAxis = function( gridObject ) {
+    this.reflectionY( 0, gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap sumbu Y (x = 0)
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap sumbu Y, dengan memanggil method reflectionX() karena refleksi sumbu Y sama dengan refleksi terhadap garis x=0
+ */
+Circle.prototype.reflectionYAxis = function( gridObject ) {
+    this.reflectionX( 0, gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap koordinat pusat (0,0)
+ * @param {Grid} gridObject
+ * @description melakuka refleksi bidang terhadap titik (0,0), dengan memanggil method reflectionXY() dengan parameter koordinat (0,0)
+ */
+Circle.prototype.reflectionCenter = function( gridObject ) {
+    this.reflectionXY( 0, 0, gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap garis x = n
+ * @param {float} n
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap garis x=n, di mana hanya absis masing-masing point bidang yang berubah. ax' = n + (n - ax) = 2n - ax
+ */
+Circle.prototype.reflectionX = function( n, gridObject ) {
+    var x2 = 2 * n - parseFloat(this.x);
+    
+    var circleR = new Circle( x2, this.y, this.radius, this.sAngle, this.eAngle, false, "blue", this.fillColor );
+    circleR.draw( gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap garis y = n
+ * @param {float} n
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap garis y=n, di mana hanya ordinat masing-masing point bidang yang berubah. ay' = n + (n - ay) = 2n - ay
+ */
+Circle.prototype.reflectionY = function( n, gridObject ) {
+    var y2 = 2 * n - parseFloat(this.y);
+    
+    var circleR = new Circle( this.x, y2, this.radius, this.sAngle, this.eAngle, false, "blue", this.fillColor );
+    circleR.draw( gridObject );
+};
+
+/**
+ * Method refleksi bidang terhadap titik x,y
+ * @param {float} x
+ * @param {float} y
+ * @param {Grid} gridObject
+ * @description melakukan refleksi bidang terhadap titik (x,y), di mana koordinat masing-masing point bidang berubah. ax' = n + (n - ax) = 2n - ax dan ay' = n + (n - ay) = 2n - y
+ */
+Circle.prototype.reflectionXY = function( x, y, gridObject ) {
+    var x2 = 2 * x - parseFloat(this.x);
+    var y2 = 2 * y - parseFloat(this.y);
+    
+    var circleR = new Circle( x2, y2, this.radius, this.sAngle, this.eAngle, false, "blue", this.fillColor );
+    circleR.draw( gridObject );
+};

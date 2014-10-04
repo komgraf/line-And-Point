@@ -173,7 +173,7 @@ Square.prototype.reflectionYAxis = function( gridObject ) {
  * @param {Grid} gridObject
  * @description melakuka refleksi bidang terhadap titik (0,0), dengan memanggil method reflectionXY() dengan parameter koordinat (0,0)
  */
-Square.prototypr.reflectionCenter = function( gridObject ) {
+Square.prototype.reflectionCenter = function( gridObject ) {
     this.reflectionXY( 0, 0, gridObject );
 };
 
@@ -181,7 +181,7 @@ Square.prototypr.reflectionCenter = function( gridObject ) {
  * Method refleksi bidang terhadap garis x = n
  * @param {float} n
  * @param {Grid} gridObject
- * @description melakukan refleksi bidang terhadap garis x=n, di mana hanya absis masing-masing point bidang yang berubah. x' = n + (n - x) = 2n - x
+ * @description melakukan refleksi bidang terhadap garis x=n, di mana hanya absis masing-masing point bidang yang berubah. ax' = n + (n - ax) = 2n - ax
  */
 Square.prototype.reflectionX = function( n, gridObject ) {
     var xA = 2 * n - parseFloat(this.pointA.x);
@@ -189,12 +189,12 @@ Square.prototype.reflectionX = function( n, gridObject ) {
     var xC = 2 * n - parseFloat(this.pointC.x);
     var xD = 2 * n - parseFloat(this.pointD.x);
     
-    var pA = new Point( xA, this.pointA.y, false, "A'" );
-    var pB = new Point( xB, this.pointB.y, false, "B'" );
-    var pC = new Point( xC, this.pointC.y, false, "C'" );
-    var pD = new Point( xD, this.pointD.y, false, "D'" );
+    var pA = new Point( xA, this.pointA.y, false, "A'", "blue" );
+    var pB = new Point( xB, this.pointB.y, false, "B'", "blue" );
+    var pC = new Point( xC, this.pointC.y, false, "C'", "blue" );
+    var pD = new Point( xD, this.pointD.y, false, "D'", "blue" );
     
-    var squareR = new Square( pA, pB, pC, pD, "blue", this.fillColor );
+    var squareR = new Square( pA, pB, pC, pD, "blue" );
     squareR.draw( gridObject );
 };
 
@@ -202,7 +202,7 @@ Square.prototype.reflectionX = function( n, gridObject ) {
  * Method refleksi bidang terhadap garis y = n
  * @param {float} n
  * @param {Grid} gridObject
- * @description melakukan refleksi bidang terhadap garis y=n, di mana hanya ordinat masing-masing point bidang yang berubah. y' = n + (n - y) = 2n - y
+ * @description melakukan refleksi bidang terhadap garis y=n, di mana hanya ordinat masing-masing point bidang yang berubah. ay' = n + (n - ay) = 2n - ay
  */
 Square.prototype.reflectionY = function( n, gridObject ) {
     var yA = 2 * n - parseFloat(this.pointA.y);
@@ -210,12 +210,12 @@ Square.prototype.reflectionY = function( n, gridObject ) {
     var yC = 2 * n - parseFloat(this.pointC.y);
     var yD = 2 * n - parseFloat(this.pointD.y);
     
-    var pA = new Point( this.pointA.x, yA, false, "A'" );
-    var pB = new Point( this.pointB.x, yB, false, "B'" );
-    var pC = new Point( this.pointC.x, yC, false, "C'" );
-    var pD = new Point( this.pointD.x, yD, false, "D'" );
+    var pA = new Point( this.pointA.x, yA, false, "A'", "blue" );
+    var pB = new Point( this.pointB.x, yB, false, "B'", "blue" );
+    var pC = new Point( this.pointC.x, yC, false, "C'", "blue" );
+    var pD = new Point( this.pointD.x, yD, false, "D'", "blue" );
     
-    var squareR = new Square( pA, pB, pC, pD, "blue", this.fillColor );
+    var squareR = new Square( pA, pB, pC, pD, "blue" );
     squareR.draw( gridObject );
 };
 
@@ -224,7 +224,7 @@ Square.prototype.reflectionY = function( n, gridObject ) {
  * @param {float} x
  * @param {float} y
  * @param {Grid} gridObject
- * @description melakukan refleksi bidang terhadap titik (x,y), di mana koordinat masing-masing point bidang berubah. x' = n + (n - x) = 2n - x dan y' = n + (n - y) = 2n - y
+ * @description melakukan refleksi bidang terhadap titik (x,y), di mana koordinat masing-masing point bidang berubah. ax' = n + (n - ax) = 2n - ax dan ay' = n + (n - ay) = 2n - ay
  */
 Square.prototype.reflectionXY = function( x, y, gridObject ) {
     var xA = 2 * x - parseFloat(this.pointA.x);
@@ -236,11 +236,11 @@ Square.prototype.reflectionXY = function( x, y, gridObject ) {
     var yC = 2 * y - parseFloat(this.pointC.y);
     var yD = 2 * y - parseFloat(this.pointD.y);
     
-    var pA = new Point( xA, yA, false, "A'" );
-    var pB = new Point( xB, yB, false, "B'" );
-    var pC = new Point( xC, yC, false, "C'" );
-    var pD = new Point( xD, yD, false, "D'" );
+    var pA = new Point( xA, yA, false, "A'", "blue" );
+    var pB = new Point( xB, yB, false, "B'", "blue" );
+    var pC = new Point( xC, yC, false, "C'", "blue" );
+    var pD = new Point( xD, yD, false, "D'", "blue" );
     
-    var squareR = new Square( pA, pB, pC, pD, "blue", this.fillColor );
+    var squareR = new Square( pA, pB, pC, pD, "blue" );
     squareR.draw( gridObject );
 };
