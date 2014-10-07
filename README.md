@@ -15,3 +15,7 @@ Aplikasi untuk Mata kuliah Komgraf
 3. Penambahan class Circle, class Square, class Triangle
 4. Penghapusan file GridClass.js, line.js, dan transformasi.js
 
+<h3>V0.1</h3>
+1. Penambahan class Shape sebagai base class untuk class Circle, class Square, dan class Triangle
+2. Penambahan fungsi translasi, scaling, shear, refleksi, dan rotasi pada class Circle, class Square, dan class Triangle
+3. Penambahan gambar "fungraph" pada header

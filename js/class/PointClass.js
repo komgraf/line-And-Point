@@ -31,7 +31,10 @@ Point.prototype.draw = function(gridObject) {
     ctx.stroke();
     ctx.fill();
     
-    var text = gridObject.getCoordinateText(this.x, this.y);
+    x = (this.isReal) ? gridObject.reconvertX(this.x) : this.x;
+    y = (this.isReal) ? gridObject.reconvertY(this.y) : this.y;
+    
+    var text = gridObject.getCoordinateText(x.toFixed(2), y.toFixed(2));
     gridObject.drawText(this.name + text, this);
     
     
