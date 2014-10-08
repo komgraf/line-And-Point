@@ -13,7 +13,7 @@
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
                     <li class="menublock">
-                        <a><h3>Fungraph V0.1</h3></a>
+                        <a><h3>Komgraf V0.1</h3></a>
                     </li>
                     <li>
                         <a href="#point-and-line" class="page-choose">
