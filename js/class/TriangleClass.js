@@ -13,7 +13,12 @@ function Triangle(pointA, pointB, pointC, lineColor, fillColor) {
     this.pointC = pointC;
     this.lineColor = (lineColor === undefined) ? "#000" : lineColor;
     this.fillColor = fillColor;
+    Shape.call(this);
 }
+
+Triangle.prototype = Object.create(Shape.prototype);
+
+Triangle.prototype.constructor = Triangle;
 
 /**
  * Method untuk menggambar segitiga di canvas
@@ -179,7 +184,7 @@ Triangle.prototype.reflectionX = function( n, gridObject ) {
     var pB = new Point( xB, this.pointB.y, false, "B'" );
     var pC = new Point( xC, this.pointC.y, false, "C'" );
     
-    var triangleR = new Triangle( pA, pB, pC, "blue", this.fillColor );
+    var triangleR = new Triangle( pA, pB, pC, gridObject.randomColor(), this.fillColor );
     triangleR.draw( gridObject );
 };
 
@@ -198,7 +203,7 @@ Triangle.prototype.reflectionY = function( n, gridObject ) {
     var pB = new Point( this.pointB.x, yB, false, "B'" );
     var pC = new Point( this.pointC.x, yC, false, "C'" );
     
-    var triangleR = new Triangle( pA, pB, pC, "blue", this.fillColor );
+    var triangleR = new Triangle( pA, pB, pC, gridObject.randomColor(), this.fillColor );
     triangleR.draw( gridObject );
 };
 
@@ -221,6 +226,55 @@ Triangle.prototype.reflectionXY = function( x, y, gridObject ) {
     var pB = new Point( xB, yB, false, "B'" );
     var pC = new Point( xC, yC, false, "C'" );
     
-    var triangleR = new Triangle( pA, pB, pC, "blue", this.fillColor );
+    var triangleR = new Triangle( pA, pB, pC, gridObject.randomColor(), this.fillColor );
     triangleR.draw( gridObject );
+};
+
+/**
+ * Method untuk melakukan rotasi pada segitiga dengan pusat (rx, ry) dan 
+ * rotasi sebesar rDeg
+ * @param {double} xr
+ * @param {double} yr
+ * @param {radian} rDeg Derajat rotasi segitiga
+ * @param {Grid} gridObject
+ * @returns {undefined}
+ */
+Triangle.prototype.rotate = function(xr, yr, rDeg, gridObject) {
+    
+    rDeg = gridObject.degToRad(rDeg);
+
+    var xA = this.rotateX(this.pointA.x, this.pointA.y, xr, yr, rDeg);
+    var yA = this.rotateY(this.pointA.x, this.pointA.y, xr, yr, rDeg);
+    var xB = this.rotateX(this.pointB.x, this.pointB.y, xr, yr, rDeg);
+    var yB = this.rotateY(this.pointB.x, this.pointB.y, xr, yr, rDeg);
+    var xC = this.rotateX(this.pointC.x, this.pointC.y, xr, yr, rDeg);
+    var yC = this.rotateY(this.pointC.x, this.pointC.y, xr, yr, rDeg);
+    
+    var pA = new Point( xA, yA, false, "A'" );
+    var pB = new Point( xB, yB, false, "B'" );
+    var pC = new Point( xC, yC, false, "C'" );
+    
+    var triangleR = new Triangle( pA, pB, pC, gridObject.randomColor(), this.fillColor );
+    triangleR.draw( gridObject );
+    
+};
+
+Triangle.prototype.rotateX = function (x, y, xr, yr, rDeg) {
+    x = parseFloat(x);
+    y = parseFloat(y);
+    xr = parseFloat(xr);
+    yr = parseFloat(yr);
+    rDeg = parseFloat(rDeg);
+    var result = xr + ((x - xr) * Math.cos(rDeg).toFixed(2)) - ((y-yr) * Math.sin(rDeg).toFixed(2));
+    return result;
+};
+
+Triangle.prototype.rotateY = function (x, y, xr, yr, rDeg) {
+    x = parseFloat(x);
+    y = parseFloat(y);
+    xr = parseFloat(xr);
+    yr = parseFloat(yr);
+    rDeg = parseFloat(rDeg);
+    var result = yr + ((x - xr) * Math.sin(rDeg).toFixed(2)) + ((y-yr) * Math.cos(rDeg).toFixed(2));
+    return result;
 };

@@ -24,7 +24,13 @@ function Circle(x, y, radius, sAngle, eAngle, isReal, lineColor, fillColor, coun
     this.lineColor = (lineColor === undefined) ? "#000" : lineColor;
     this.fillColor = fillColor;
     this.counterClock = (counterClock === undefined) ? false : counterClock;
+    Shape.call(this);
 }
+
+Circle.prototype = Object.create(Shape.prototype);
+
+Circle.prototype.constructor = Circle;
+
 
 /**
  * Method untuk menggambar lingkaran

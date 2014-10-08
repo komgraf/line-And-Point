@@ -106,7 +106,7 @@ Grid.prototype.convertX = function(value) {
  */
 Grid.prototype.convertY = function(value) {
     value *= this.scale;
-    
+
     return (this.y0 - value);
 };
 
@@ -130,6 +130,11 @@ Grid.prototype.reconvertX = function(value) {
 Grid.prototype.reconvertY = function(value) {
     value -= this.y0;
     return (-1) * (value / this.scale);
+};
+
+Grid.prototype.degToRad = function(value) {
+    var result = parseFloat(value) / 180;
+    return result * Math.PI;
 };
 
 Grid.prototype.getCoordinateText = function(x, y) {
@@ -172,15 +177,15 @@ Grid.prototype.lineAddition2 = function(pointA, pointB) {
 Grid.prototype.lineAddition3 = function(x1, y1, x2, y2) {
     var ax = parseFloat(x2) + parseFloat(x1);
     var ay = parseFloat(y2) + parseFloat(y1);
-    
+
     var p = new Point(ax, ay, false, "C");
     p.draw(this);
-    
+
     var line1 = new Line(new Point(x1, y1, false), p, false, false, "red");
     line1.draw(this);
     var line2 = new Line(new Point(x2, y2, false), p, false, false, "red");
     line2.draw(this);
-    
+
 };
 
 Grid.prototype.lineSubtraction = function(line) {
@@ -197,7 +202,7 @@ Grid.prototype.lineSubtraction3 = function(x1, y1, x2, y2) {
     var sy = parseFloat(y2) - parseFloat(y1);
     var p = new Point(sx, sy, false, "D");
     p.draw(this);
-    
+
     var l1 = new Line(new Point(x1, y1, false), p, false, false, "red");
     l1.draw(this);
     var l2 = new Line(new Point(x2, y2, false), p, false, false, "red");
@@ -220,7 +225,7 @@ Grid.prototype.reflectionCenter = function(line) {
 Grid.prototype.reflectionX = function(line, n) {
     var x1 = 2 * n - parseFloat(line.pointA.x);
     var x2 = 2 * n - parseFloat(line.pointB.x);
-    
+
     var p1 = new Point(x1, line.pointA.y, false, "A'");
     p1.draw(this);
     var p2 = new Point(x2, line.pointB.y, false, "B'");
@@ -233,14 +238,14 @@ Grid.prototype.reflectionX = function(line, n) {
 Grid.prototype.reflectionY = function(line, n) {
     var y1 = 2 * n - parseFloat(line.pointA.y);
     var y2 = 2 * n - parseFloat(line.pointB.y);
-    
+
     var p1 = new Point(line.pointA.x, y1, false, "A'");
     p1.draw(this);
     var p2 = new Point(line.pointB.x, y2, false, "B'");
     p2.draw(this);
     var l1 = new Line(p1, p2, line.startArrow, line.endArrow, "blue");
     l1.draw(this);
-    
+
 };
 
 //refleksi terhadap titik. mencari X dan Y baru
@@ -249,7 +254,7 @@ Grid.prototype.reflectionXY = function(line, x, y) {
     var y1 = 2 * y - parseFloat(line.pointA.y);
     var x2 = 2 * x - parseFloat(line.pointB.x);
     var y2 = 2 * y - parseFloat(line.pointB.y);
-    
+
     var p1 = new Point(x1, y1, false, "A'");
     p1.draw(this);
     var p2 = new Point(x2, y2, false, "B'");
@@ -259,29 +264,36 @@ Grid.prototype.reflectionXY = function(line, x, y) {
 };
 
 //mencari nilai x dan y masing-masing garis
-Grid.prototype.dotProduct = function( lineA, lineB ) {
-    var ax = lineA.pointB.x>lineA.pointA.x? Math.abs(lineA.pointB.x-lineA.pointA.x): Math.abs(lineA.pointB.x-lineA.pointA.x)*-1;
-    var ay = lineA.pointB.y>lineA.pointA.y? Math.abs(lineA.pointB.y-lineA.pointA.y): Math.abs(lineA.pointB.y-lineA.pointA.y)*-1;
-    var bx = lineB.pointB.x>lineB.pointA.x? Math.abs(lineB.pointB.x-lineB.pointA.x): Math.abs(lineB.pointB.x-lineB.pointA.x)*-1;
-    var by = lineB.pointB.y>lineB.pointA.y? Math.abs(lineB.pointB.y-lineB.pointA.y): Math.abs(lineB.pointB.y-lineB.pointA.y)*-1;
-    return this.dotProduct2( ax, ay, bx, by );
+Grid.prototype.dotProduct = function(lineA, lineB) {
+    var ax = lineA.pointB.x > lineA.pointA.x ? Math.abs(lineA.pointB.x - lineA.pointA.x) : Math.abs(lineA.pointB.x - lineA.pointA.x) * -1;
+    var ay = lineA.pointB.y > lineA.pointA.y ? Math.abs(lineA.pointB.y - lineA.pointA.y) : Math.abs(lineA.pointB.y - lineA.pointA.y) * -1;
+    var bx = lineB.pointB.x > lineB.pointA.x ? Math.abs(lineB.pointB.x - lineB.pointA.x) : Math.abs(lineB.pointB.x - lineB.pointA.x) * -1;
+    var by = lineB.pointB.y > lineB.pointA.y ? Math.abs(lineB.pointB.y - lineB.pointA.y) : Math.abs(lineB.pointB.y - lineB.pointA.y) * -1;
+    return this.dotProduct2(ax, ay, bx, by);
 };
 
 //menghitung dot product
-Grid.prototype.dotProduct2 = function( ax, ay, bx, by ) {
-    return ax*bx+ay*by;
+Grid.prototype.dotProduct2 = function(ax, ay, bx, by) {
+    return ax * bx + ay * by;
 };
 
 //mencari nilai x dan y masing-masing garis
-Grid.prototype.crossProduct = function( lineA, lineB ) {
-    var ax = lineA.pointB.x>lineA.pointA.x? Math.abs(lineA.pointB.x-lineA.pointA.x): Math.abs(lineA.pointB.x-lineA.pointA.x)*-1;
-    var ay = lineA.pointB.y>lineA.pointA.y? Math.abs(lineA.pointB.y-lineA.pointA.y): Math.abs(lineA.pointB.y-lineA.pointA.y)*-1;
-    var bx = lineB.pointB.x>lineB.pointA.x? Math.abs(lineB.pointB.x-lineB.pointA.x): Math.abs(lineB.pointB.x-lineB.pointA.x)*-1;
-    var by = lineB.pointB.y>lineB.pointA.y? Math.abs(lineB.pointB.y-lineB.pointA.y): Math.abs(lineB.pointB.y-lineB.pointA.y)*-1;
-    return this.crossProduct2( ax, ay, bx, by );
+Grid.prototype.crossProduct = function(lineA, lineB) {
+    var ax = lineA.pointB.x > lineA.pointA.x ? Math.abs(lineA.pointB.x - lineA.pointA.x) : Math.abs(lineA.pointB.x - lineA.pointA.x) * -1;
+    var ay = lineA.pointB.y > lineA.pointA.y ? Math.abs(lineA.pointB.y - lineA.pointA.y) : Math.abs(lineA.pointB.y - lineA.pointA.y) * -1;
+    var bx = lineB.pointB.x > lineB.pointA.x ? Math.abs(lineB.pointB.x - lineB.pointA.x) : Math.abs(lineB.pointB.x - lineB.pointA.x) * -1;
+    var by = lineB.pointB.y > lineB.pointA.y ? Math.abs(lineB.pointB.y - lineB.pointA.y) : Math.abs(lineB.pointB.y - lineB.pointA.y) * -1;
+    return this.crossProduct2(ax, ay, bx, by);
 };
 
 //menghitung cross product
-Grid.prototype.crossProduct2 = function( ax, ay, bx, by ) {
-    return ax*by-ay*bx;
+Grid.prototype.crossProduct2 = function(ax, ay, bx, by) {
+    return ax * by - ay * bx;
 };
+
+Grid.prototype.randomColor = function() {
+    var warna = new Array("red", "green", "blue", "yellow", "#8A4B08", "#FA5858", "#00FFFF");
+    return warna[Math.floor((Math.random() * warna.length))];
+};
+
+

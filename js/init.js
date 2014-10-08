@@ -5,7 +5,17 @@ var p1, p2, p3, p4, line1, line2, segi4, segi3, lingkaran;
 function init() {
     var canvas = get('myCanvas');
     var grid = new Grid(canvas, scale);
-
+    
+//    Mouse listener canvas
+//    canvas.addEventListener("mousedown", function(event) {
+//        var rect = event.target.getBoundingClientRect();
+//        var x = (event.clientX-rect.left)/(rect.right-rect.left)*event.target.width;
+//        var y = (event.clientY-rect.top)/(rect.bottom-rect.top)*event.target.height;
+////        alert('x = ' + x + "\ny = " + y);
+//        var po = new Point(x, y, true);
+//        po.draw(grid);
+//    }, false);
+    
     var bt1 = get('buttonTitik1');
     bt1.onclick = function() {
         var inputX = get('inputX1');
@@ -400,6 +410,106 @@ function init() {
             segi4.reflectionXY(xy1, xy2, grid);
         }
     };
+    
+    //listener untuk refleksi segitiga terhadap sumbu X
+    var brXATriangle = get('buttonRefXAxisTriangle');
+    brXATriangle.onclick = function() {
+        if (segi3 !== null) {
+            segi3.reflectionXAxis(grid);
+        }
+    };
+
+    //listener untuk refleksi segitiga terhadap sumbu Y
+    var brYATriangle = get('buttonRefYAxisTriangle');
+    brYATriangle.onclick = function() {
+        if (segi3 !== null) {
+            segi3.reflectionYAxis(grid);
+        }
+    };
+
+    //listener untuk refleksi segitiga terhadap titik pusat
+    var brCTriangle = get('buttonRefCenterTriangle');
+    brCTriangle.onclick = function() {
+        if (segi3 !== null) {
+            segi3.reflectionCenter(grid);
+        }
+    };
+
+    //listener untuk refleksi segitiga terhadap garis sejajar sumbu Y
+    var brXTriangle = get('buttonRefXTriangle');
+    brXTriangle.onclick = function() {
+        if (segi3 !== null) {
+            var x = get('inputRefXTriangle').value;
+
+            var l1 = new Line(new Point(grid.convertX(x), 0, true),
+                    new Point(grid.convertX(x), grid.canvas.height, true), false, false, "blue");
+            l1.draw(grid);
+
+            segi3.reflectionX(x, grid);
+        }
+    };
+
+    //listener untuk refleksi segitiga terhadap garis sejajar sumbu X
+    var brYTriangle = get('buttonRefYTriangle');
+    brYTriangle.onclick = function() {
+        if (segi3 !== null) {
+            var y = get('inputRefYTriangle').value;
+
+            var l1 = new Line(new Point(0, grid.convertY(y), true),
+                    new Point(grid.canvas.width, grid.convertY(y), true), false, false, "blue");
+            l1.draw(grid);
+
+            segi3.reflectionY(y, grid);
+        }
+    };
+
+    //listener untuk refleksi segitiga terhadap titik
+    var brXYTriangle = get('buttonRefXYTriangle');
+    brXYTriangle.onclick = function() {
+        if (segi3 !== null) {
+            var xy1 = get('inputRefXY1Triangle').value;
+            var xy2 = get('inputRefXY2Triangle').value;
+
+            var l1 = new Line(new Point(grid.convertX(xy1), 0, true),
+                    new Point(grid.convertX(xy1), grid.canvas.height, true), false, false, "blue");
+            l1.draw(grid);
+
+            var l2 = new Line(new Point(0, grid.convertY(xy2), true),
+                    new Point(grid.canvas.width, grid.convertY(xy2), true), false, false, "blue");
+            l2.draw(grid);
+
+            segi3.reflectionXY(xy1, xy2, grid);
+        }
+    };
+    
+    var rotateTriangle = get('buttonRotateTriangle');
+    rotateTriangle.onclick = function() {
+        if(segi3 !== null) {
+            var xr = get('inputRotateTriangleXr').value;
+            var yr = get('inputRotateTriangleYr').value;
+            var deg = get('inputRotateTriangleDeg').value;
+            
+            var pR = new Point(xr, yr, false, 'p', 'red');
+            pR.draw(grid);
+            
+            segi3.rotate(xr, yr, deg, grid);
+        }
+    };
+    
+    var rotateSquare = get('buttonRotateSquare');
+    rotateSquare.onclick = function() {
+        if(segi4 !== null) {
+            var xr = get('inputRotateSquareXr').value;
+            var yr = get('inputRotateSquareYr').value;
+            var deg = get('inputRotateSquareDeg').value;
+            
+            var pR = new Point(xr, yr, false, 'p', 'red');
+            pR.draw(grid);
+            
+            segi4.rotate(xr, yr, deg, grid);
+        }
+    };
+    
 }
 
 function get(id) {

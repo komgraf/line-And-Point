@@ -15,7 +15,13 @@ function Square(pointA, pointB, pointC, pointD, lineColor, fillColor) {
     this.pointD = pointD;
     this.lineColor = (lineColor === undefined) ? "#000" : lineColor;
     this.fillColor = fillColor;
+    Shape.call(this);
 }
+
+Square.prototype = Object.create(Shape.prototype);
+
+Square.prototype.constructor = Square;
+
 
 /**
  * Method untuk menggambar garis di canvas
@@ -38,7 +44,7 @@ Square.prototype.draw = function(gridObject) {
     var y4 = (this.pointD.isReal) ? this.pointD.y : gridObject.convertY(this.pointD.y);
 
     var ctx = gridObject.ctx;
-    ctx.lineColor = this.lineColor;
+    ctx.strokeStyle = this.lineColor;
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
@@ -194,7 +200,7 @@ Square.prototype.reflectionX = function( n, gridObject ) {
     var pC = new Point( xC, this.pointC.y, false, "C'", "blue" );
     var pD = new Point( xD, this.pointD.y, false, "D'", "blue" );
     
-    var squareR = new Square( pA, pB, pC, pD, "blue" );
+    var squareR = new Square( pA, pB, pC, pD, gridObject.randomColor() );
     squareR.draw( gridObject );
 };
 
@@ -215,7 +221,7 @@ Square.prototype.reflectionY = function( n, gridObject ) {
     var pC = new Point( this.pointC.x, yC, false, "C'", "blue" );
     var pD = new Point( this.pointD.x, yD, false, "D'", "blue" );
     
-    var squareR = new Square( pA, pB, pC, pD, "blue" );
+    var squareR = new Square( pA, pB, pC, pD, gridObject.randomColor() );
     squareR.draw( gridObject );
 };
 
@@ -241,6 +247,38 @@ Square.prototype.reflectionXY = function( x, y, gridObject ) {
     var pC = new Point( xC, yC, false, "C'", "blue" );
     var pD = new Point( xD, yD, false, "D'", "blue" );
     
-    var squareR = new Square( pA, pB, pC, pD, "blue" );
+    var squareR = new Square( pA, pB, pC, pD, gridObject.randomColor() );
     squareR.draw( gridObject );
+};
+
+/**
+ * Method untuk melakukan rotasi pada segiempat dengan pusat (rx, ry) dan 
+ * rotasi sebesar rDeg
+ * @param {double} xr
+ * @param {double} yr
+ * @param {radian} rDeg Derajat rotasi segiempat
+ * @param {Grid} gridObject
+ * @returns {undefined}
+ */
+Square.prototype.rotate = function(xr, yr, rDeg, gridObject) {
+    
+    rDeg = gridObject.degToRad(rDeg);
+    
+    var xA = this.rotateX(this.pointA.x, this.pointA.y, xr, yr, rDeg);
+    var yA = this.rotateY(this.pointA.x, this.pointA.y, xr, yr, rDeg);
+    var xB = this.rotateX(this.pointB.x, this.pointB.y, xr, yr, rDeg);
+    var yB = this.rotateY(this.pointB.x, this.pointB.y, xr, yr, rDeg);
+    var xC = this.rotateX(this.pointC.x, this.pointC.y, xr, yr, rDeg);
+    var yC = this.rotateY(this.pointC.x, this.pointC.y, xr, yr, rDeg);
+    var xD = this.rotateX(this.pointD.x, this.pointD.y, xr, yr, rDeg);
+    var yD = this.rotateY(this.pointD.x, this.pointD.y, xr, yr, rDeg);
+    
+    var pA = new Point( xA, yA, false, "A'" );
+    var pB = new Point( xB, yB, false, "B'" );
+    var pC = new Point( xC, yC, false, "C'" );
+    var pD = new Point( xD, yD, false, "D'" );
+    
+    var squareR = new Square( pA, pB, pC, pD, gridObject.randomColor() );
+    squareR.draw( gridObject );
+    
 };
