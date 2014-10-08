@@ -180,14 +180,13 @@ function init() {
         segi3 = null;
         lingkaran = null;
         grid.clear();
-/*
+
         var inputgrup = document.getElementById('wrapper');
         var input = inputgrup.getElementsByTagName('input');
 
         for (var z = 0; z < input.length; z++) {
             input[z].value = "";
         }
-*/
     };
 
     //listener untuk melakukan dotproduct
