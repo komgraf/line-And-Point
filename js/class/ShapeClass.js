@@ -8,6 +8,15 @@ function Shape() {
     
 }
 
+/**
+* Method untuk menghitung nilai koordinat x-axis hasil rotasi
+* @param {float} x
+* @param {float} y
+* @param {float} xr Koordinat x-axis titik pusat rotasi
+* @param {float} yr Koordinat y-axis titik pusat rotasi
+* @param {float} rDeg Derajat rotasi dalam Radian
+* @returns Nilai koordinat x-axis hasil rotasi
+*/
 Shape.prototype.rotateX = function(x, y, xr, yr, rDeg) {
     x = parseFloat(x);
     y = parseFloat(y);
@@ -19,6 +28,15 @@ Shape.prototype.rotateX = function(x, y, xr, yr, rDeg) {
     return result;
 };
 
+/*
+* Method untuk menghitung nilai koordinat y-axis hasil rotasi
+* @param {float} x
+* @param {float} y
+* @param {float} xr Koordinat x-axis titik pusat rotasi
+* @param {float} yr Koordinat y-axis titik pusat rotasi
+* @param {float} rDeg Derajat rotasi dalam Radian
+* @returns Nilai koordinat y-axis hasil rotasi
+*/
 Shape.prototype.rotateY = function (x, y, xr, yr, rDeg) {
     x = parseFloat(x);
     y = parseFloat(y);

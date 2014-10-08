@@ -258,23 +258,3 @@ Triangle.prototype.rotate = function(xr, yr, rDeg, gridObject) {
     triangleR.draw( gridObject );
     
 };
-
-Triangle.prototype.rotateX = function (x, y, xr, yr, rDeg) {
-    x = parseFloat(x);
-    y = parseFloat(y);
-    xr = parseFloat(xr);
-    yr = parseFloat(yr);
-    rDeg = parseFloat(rDeg);
-    var result = xr + ((x - xr) * Math.cos(rDeg).toFixed(2)) - ((y-yr) * Math.sin(rDeg).toFixed(2));
-    return result;
-};
-
-Triangle.prototype.rotateY = function (x, y, xr, yr, rDeg) {
-    x = parseFloat(x);
-    y = parseFloat(y);
-    xr = parseFloat(xr);
-    yr = parseFloat(yr);
-    rDeg = parseFloat(rDeg);
-    var result = yr + ((x - xr) * Math.sin(rDeg).toFixed(2)) + ((y-yr) * Math.cos(rDeg).toFixed(2));
-    return result;
-};
