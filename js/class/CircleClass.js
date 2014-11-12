@@ -61,6 +61,8 @@ Circle.prototype.draw = function(gridObject) {
         ctx.fillStyle = this.fillColor;
         ctx.fill();
     }
+    
+    gridObject.arrObject.push(this);
 };
 
 /**

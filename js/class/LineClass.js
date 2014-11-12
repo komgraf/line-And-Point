@@ -11,7 +11,6 @@
 function Line(pointA, pointB, startArrow, endArrow, color) {
     this.pointA = pointA;
     this.pointB = pointB;
-//    this.isReal = isReal;
     this.startArrow = (startArrow === undefined) ? false : startArrow;
     this.endArrow = (endArrow === undefined) ? false : endArrow;
     this.color = (color === undefined) ? "#000" : color;

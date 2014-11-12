@@ -13,52 +13,57 @@ function Square(pointA, pointB, pointC, pointD, lineColor, fillColor) {
     this.pointB = pointB;
     this.pointC = pointC;
     this.pointD = pointD;
+    Polygon.call(this);
     this.lineColor = (lineColor === undefined) ? "#000" : lineColor;
     this.fillColor = fillColor;
-    Shape.call(this);
+    this.arrPoint = new Array(this.pointA, this.pointB, this.pointC, this.pointD);
 }
 
-Square.prototype = Object.create(Shape.prototype);
+Square.prototype = Object.create(Polygon.prototype);
 
 Square.prototype.constructor = Square;
+
+Square.prototype.draw = Polygon.draw(gridObject);
 
 
 /**
  * Method untuk menggambar garis di canvas
  * @param {Grid} gridObject
  */
-Square.prototype.draw = function(gridObject) {
+// Square.prototype.draw = function(gridObject) {
 
-    this.pointA.draw(gridObject);
-    this.pointB.draw(gridObject);
-    this.pointC.draw(gridObject);
-    this.pointD.draw(gridObject);
+//     this.pointA.draw(gridObject);
+//     this.pointB.draw(gridObject);
+//     this.pointC.draw(gridObject);
+//     this.pointD.draw(gridObject);
 
-    var x1 = (this.pointA.isReal) ? this.pointA.x : gridObject.convertX(this.pointA.x);
-    var y1 = (this.pointA.isReal) ? this.pointA.y : gridObject.convertY(this.pointA.y);
-    var x2 = (this.pointB.isReal) ? this.pointB.x : gridObject.convertX(this.pointB.x);
-    var y2 = (this.pointB.isReal) ? this.pointB.y : gridObject.convertY(this.pointB.y);
-    var x3 = (this.pointC.isReal) ? this.pointC.x : gridObject.convertX(this.pointC.x);
-    var y3 = (this.pointC.isReal) ? this.pointC.y : gridObject.convertY(this.pointC.y);
-    var x4 = (this.pointD.isReal) ? this.pointD.x : gridObject.convertX(this.pointD.x);
-    var y4 = (this.pointD.isReal) ? this.pointD.y : gridObject.convertY(this.pointD.y);
+//     var x1 = (this.pointA.isReal) ? this.pointA.x : gridObject.convertX(this.pointA.x);
+//     var y1 = (this.pointA.isReal) ? this.pointA.y : gridObject.convertY(this.pointA.y);
+//     var x2 = (this.pointB.isReal) ? this.pointB.x : gridObject.convertX(this.pointB.x);
+//     var y2 = (this.pointB.isReal) ? this.pointB.y : gridObject.convertY(this.pointB.y);
+//     var x3 = (this.pointC.isReal) ? this.pointC.x : gridObject.convertX(this.pointC.x);
+//     var y3 = (this.pointC.isReal) ? this.pointC.y : gridObject.convertY(this.pointC.y);
+//     var x4 = (this.pointD.isReal) ? this.pointD.x : gridObject.convertX(this.pointD.x);
+//     var y4 = (this.pointD.isReal) ? this.pointD.y : gridObject.convertY(this.pointD.y);
 
-    var ctx = gridObject.ctx;
-    ctx.strokeStyle = this.lineColor;
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.lineTo(x3, y3);
-    ctx.lineTo(x4, y4);
-    ctx.closePath();
-    ctx.stroke();
+//     var ctx = gridObject.ctx;
+//     ctx.strokeStyle = this.lineColor;
+//     ctx.beginPath();
+//     ctx.moveTo(x1, y1);
+//     ctx.lineTo(x2, y2);
+//     ctx.lineTo(x3, y3);
+//     ctx.lineTo(x4, y4);
+//     ctx.closePath();
+//     ctx.stroke();
 
-    if (this.fillColor !== undefined) {
-        ctx.fillStyle = this.fillColor;
-        ctx.fill();
-    }
+//     if (this.fillColor !== undefined) {
+//         ctx.fillStyle = this.fillColor;
+//         ctx.fill();
+//     }
+    
+//     gridObject.arrObject.push(this);
 
-};
+// };
 
 /**
  * Method untuk melakukan translasi pada segiempat
@@ -282,3 +287,5 @@ Square.prototype.rotate = function(xr, yr, rDeg, gridObject) {
     squareR.draw( gridObject );
     
 };
+
+Triangle.prototype.convertToGridScale = Polygon.convertToGridScale(gridObject);

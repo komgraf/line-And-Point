@@ -7,6 +7,7 @@ function Grid(canvasObject, scale) {
     this.canvas = canvasObject;
     this.ctx = this.canvas.getContext("2d");
     this.scale = scale;
+    this.arrObject = new Array();
     this.init();
 }
 
@@ -23,6 +24,7 @@ Grid.prototype.init = function() {
  */
 Grid.prototype.clear = function() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.arrObject = new Array();  // ini kebodohan
     this.init();
 };
 
@@ -93,9 +95,9 @@ Grid.prototype.reconvert = function(value) {
  * @returns {double} Nilai hasil konversi
  */
 Grid.prototype.convertX = function(value) {
-    value *= this.scale;
+    value = parseFloat(value) * this.scale;
 
-    return (this.x0 + value);
+    return (this.x0 + parseFloat(value));
 };
 
 /**
@@ -105,9 +107,9 @@ Grid.prototype.convertX = function(value) {
  * @returns {double} Nilai hasil konversi
  */
 Grid.prototype.convertY = function(value) {
-    value *= this.scale;
+    value = parseFloat(value) * this.scale;
 
-    return (this.y0 - value);
+    return (this.y0 - parseFloat(value));
 };
 
 /**
@@ -118,7 +120,7 @@ Grid.prototype.convertY = function(value) {
  */
 Grid.prototype.reconvertX = function(value) {
     value -= this.x0;
-    return (-1) * (value / this.scale);
+    return (value / this.scale);
 };
 
 /**

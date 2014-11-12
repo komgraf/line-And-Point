@@ -11,47 +11,52 @@ function Triangle(pointA, pointB, pointC, lineColor, fillColor) {
     this.pointA = pointA;
     this.pointB = pointB;
     this.pointC = pointC;
+    Polygon.call(this);
     this.lineColor = (lineColor === undefined) ? "#000" : lineColor;
     this.fillColor = fillColor;
-    Shape.call(this);
+    this.arrPoint = new Array(this.pointA, this.pointB, this.pointC);
 }
 
-Triangle.prototype = Object.create(Shape.prototype);
+Triangle.prototype = Object.create(Polygon.prototype);
 
 Triangle.prototype.constructor = Triangle;
+
+Triangle.prototype.draw = Polygon.draw(gridObject);
 
 /**
  * Method untuk menggambar segitiga di canvas
  * @param {Grid} gridObject
  */
-Triangle.prototype.draw = function(gridObject) {
-    this.pointA.draw(gridObject);
-    this.pointB.draw(gridObject);
-    this.pointC.draw(gridObject);
+// Triangle.prototype.draw = function(gridObject) {
+//     this.pointA.draw(gridObject);
+//     this.pointB.draw(gridObject);
+//     this.pointC.draw(gridObject);
     
-    var x1 = (this.pointA.isReal) ? this.pointA.x : gridObject.convertX(this.pointA.x);
-    var y1 = (this.pointA.isReal) ? this.pointA.y : gridObject.convertY(this.pointA.y);
-    var x2 = (this.pointB.isReal) ? this.pointB.x : gridObject.convertX(this.pointB.x);
-    var y2 = (this.pointB.isReal) ? this.pointB.y : gridObject.convertY(this.pointB.y);
-    var x3 = (this.pointC.isReal) ? this.pointC.x : gridObject.convertX(this.pointC.x);
-    var y3 = (this.pointC.isReal) ? this.pointC.y : gridObject.convertY(this.pointC.y);
+//     var x1 = (this.pointA.isReal) ? this.pointA.x : gridObject.convertX(this.pointA.x);
+//     var y1 = (this.pointA.isReal) ? this.pointA.y : gridObject.convertY(this.pointA.y);
+//     var x2 = (this.pointB.isReal) ? this.pointB.x : gridObject.convertX(this.pointB.x);
+//     var y2 = (this.pointB.isReal) ? this.pointB.y : gridObject.convertY(this.pointB.y);
+//     var x3 = (this.pointC.isReal) ? this.pointC.x : gridObject.convertX(this.pointC.x);
+//     var y3 = (this.pointC.isReal) ? this.pointC.y : gridObject.convertY(this.pointC.y);
 
-    var ctx = gridObject.ctx;
-    ctx.strokeStyle = this.lineColor;
+//     var ctx = gridObject.ctx;
+//     ctx.strokeStyle = this.lineColor;
 
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.lineTo(x3, y3);
-    ctx.closePath();
-    ctx.stroke();
+//     ctx.beginPath();
+//     ctx.moveTo(x1, y1);
+//     ctx.lineTo(x2, y2);
+//     ctx.lineTo(x3, y3);
+//     ctx.closePath();
+//     ctx.stroke();
 
-    if (this.fillColor !== undefined) {
-        ctx.fillStyle = this.fillColor;
-        ctx.fill();
-    }
+//     if (this.fillColor !== undefined) {
+//         ctx.fillStyle = this.fillColor;
+//         ctx.fill();
+//     }
+    
+//     gridObject.arrObject.push(this);
 
-};
+// };
 
 /**
  * Method untuk melakukan translasi pada segitiga
@@ -258,3 +263,5 @@ Triangle.prototype.rotate = function(xr, yr, rDeg, gridObject) {
     triangleR.draw( gridObject );
     
 };
+
+Triangle.prototype.convertToGridScale = Polygon.convertToGridScale(gridObject);

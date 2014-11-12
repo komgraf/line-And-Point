@@ -1,20 +1,12 @@
 window.onload = init;
 var scale = 25;
-var p1, p2, p3, p4, line1, line2, segi4, segi3, lingkaran;
+var p1, p2, p3, p4, line1, line2, segi4, segi3, lingkaran, clipObject;
+var arrPoint;
 
 function init() {
     var canvas = get('myCanvas');
     var grid = new Grid(canvas, scale);
-    
-//    Mouse listener canvas
-//    canvas.addEventListener("mousedown", function(event) {
-//        var rect = event.target.getBoundingClientRect();
-//        var x = (event.clientX-rect.left)/(rect.right-rect.left)*event.target.width;
-//        var y = (event.clientY-rect.top)/(rect.bottom-rect.top)*event.target.height;
-////        alert('x = ' + x + "\ny = " + y);
-//        var po = new Point(x, y, true);
-//        po.draw(grid);
-//    }, false);
+    var arrPoint = new Array();
     
     var bt1 = get('buttonTitik1');
     bt1.onclick = function() {
@@ -24,6 +16,7 @@ function init() {
         var p = new Point(inputX.value, inputY.value, false, "A");
         p.draw(grid);
         p1 = p;
+        grid.arrObject.push(p);
         //arr.push(p);
     };
 
@@ -36,6 +29,7 @@ function init() {
         var p = new Point(inputX.value, inputY.value, false, "B");
         p.draw(grid);
         p2 = p;
+        grid.arrObject.push(p);
         //arr.push(p);
     };
 
@@ -45,6 +39,7 @@ function init() {
         if (p1 !== null && p2 !== null) {
             line1 = new Line(p1, p2, false, true);
             line1.draw(grid);
+            grid.arrObject.push(line1);
             var label = get('lblPanjang');
             label.innerHTML = "Panjang garis : " + line1.length(grid);
         }
@@ -56,6 +51,7 @@ function init() {
 
         var p = new Point(inputX.value, inputY.value, false, "C");
         p.draw(grid);
+        grid.arrObject.push(p);
         p3 = p;
         //arr.push(p);
     };
@@ -68,6 +64,7 @@ function init() {
 
         var p = new Point(inputX.value, inputY.value, false, "D");
         p.draw(grid);
+        grid.arrObject.push(p);
         p4 = p;
         //arr.push(p);
     };
@@ -78,6 +75,7 @@ function init() {
         if (p3 !== null && p4 !== null) {
             line2 = new Line(p3, p4, false, true);
             line2.draw(grid);
+            grid.arrObject.push(line2);
             var label = get('lblPanjang');
             label.innerHTML = "Panjang garis : " + line2.length(grid);
         }
@@ -509,6 +507,58 @@ function init() {
             
             segi4.rotate(xr, yr, deg, grid);
         }
+    };
+    
+    var clipper = get('buttonClipper');
+    clipper.onclick = function() {
+        var xMin = get('inputClipperXMin').value;
+        var xMax = get('inputClipperXMax').value;
+        var yMin = get('inputClipperYMin').value;
+        var yMax = get('inputClipperYMax').value;
+        
+        clipObject = new Clipper(xMin, yMin, xMax, yMax, false);
+        clipObject.draw(grid);
+    };
+    
+    var btnClip = get('buttonClip');
+    btnClip.onclick = function() {
+        if(clipObject !== null ) {
+            clipObject.clip(grid);
+        }
+    };
+
+    var btnCreateObject = get('buttonCreateObject');
+    btnCreateObject.onclick = function() {
+        canvas.addEventListener("mousedown", mousehandler, false);
+    };
+
+    //    Mouse listener myCanvas
+    var mousehandler = function(event) {
+        var rect = event.target.getBoundingClientRect();
+        var x = (event.clientX-rect.left)/(rect.right-rect.left)*event.target.width;
+        var y = (event.clientY-rect.top)/(rect.bottom-rect.top)*event.target.height;
+//        alert('x = ' + x + "\ny = " + y);
+        x = grid.reconvertX(x);
+        y = grid.reconvertY(y);
+        var po = new Point(x, y, false);
+        po.draw(grid);
+        grid.arrObject.push(po);
+        arrPoint.push(po);
+    };
+
+    var btnDrawObject = get('buttonDrawObject');
+    btnDrawObject.onclick = function() {
+        canvas.removeEventListener('mousedown', mousehandler);
+        if(arrPoint.length === 2) {
+            var line = new Line(arrPoint[0], arrPoint[1]);
+            line.draw(grid);
+            grid.arrObject.push(line);
+        } else if(arrPoint.length > 2) {
+            var poly = new Polygon(arrPoint, "#000", undefined);
+            poly.draw(grid);    
+        }
+        
+        arrPoint = new Array();
     };
     
 }
