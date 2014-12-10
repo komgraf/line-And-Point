@@ -37,7 +37,7 @@ function init() {
     var b1 = get('buttonGaris');
     b1.onclick = function() {
         if (p1 !== null && p2 !== null) {
-            line1 = new Line(p1, p2, false, true);
+            line1 = new Line(p1, p2, false, true, grid.randomColor());
             line1.draw(grid);
             grid.arrObject.push(line1);
             var label = get('lblPanjang');
@@ -73,7 +73,7 @@ function init() {
     var bG2 = get('buttonGaris2');
     bG2.onclick = function() {
         if (p3 !== null && p4 !== null) {
-            line2 = new Line(p3, p4, false, true);
+            line2 = new Line(p3, p4, false, true, grid.randomColor());
             line2.draw(grid);
             grid.arrObject.push(line2);
             var label = get('lblPanjang');
@@ -128,7 +128,7 @@ function init() {
             var x = get('inputRefX').value;
 
             var l1 = new Line(new Point(grid.convertX(x), 0, true),
-                    new Point(grid.convertX(x), grid.canvas.height, true), false, false, "blue");
+                    new Point(grid.convertX(x), grid.canvas.height, true), false, false, grid.randomColor());
             l1.draw(grid);
 
             grid.reflectionX(line1, x);
@@ -142,7 +142,7 @@ function init() {
             var y = get('inputRefY').value;
 
             var l1 = new Line(new Point(0, grid.convertY(y), true),
-                    new Point(grid.canvas.width, grid.convertY(y), true), false, false, "blue");
+                    new Point(grid.canvas.width, grid.convertY(y), true), false, false, grid.randomColor());
             l1.draw(grid);
 
             grid.reflectionY(line1, y);
@@ -157,11 +157,11 @@ function init() {
             var xy2 = get('inputRefXY2').value;
 
             var l1 = new Line(new Point(grid.convertX(xy1), 0, true),
-                    new Point(grid.convertX(xy1), grid.canvas.height, true), false, false, "blue");
+                    new Point(grid.convertX(xy1), grid.canvas.height, true), false, false, grid.randomColor());
             l1.draw(grid);
 
             var l2 = new Line(new Point(0, grid.convertY(xy2), true),
-                    new Point(grid.canvas.width, grid.convertY(xy2), true), false, false, "blue");
+                    new Point(grid.canvas.width, grid.convertY(xy2), true), false, false, grid.randomColor());
             l2.draw(grid);
 
             grid.reflectionXY(line1, xy1, xy2);
@@ -221,7 +221,7 @@ function init() {
         var pointC = new Point(inputKotakX3, inputKotakY3, false, "C");
         var pointD = new Point(inputKotakX4, inputKotakY4, false, "D");
 
-        var segiEmpat = new Square(pointA, pointB, pointC, pointD, undefined, undefined);
+        var segiEmpat = new Square(pointA, pointB, pointC, pointD, grid.randomColor(), undefined);
         segiEmpat.draw(grid);
         segi4 = segiEmpat;
     };
@@ -281,7 +281,7 @@ function init() {
         var pointB = new Point(inputSegitigaX2, inputSegitigaY2, false, "B");
         var pointC = new Point(inputSegitigaX3, inputSegitigaY3, false, "C");
 
-        var segiTiga = new Triangle(pointA, pointB, pointC, undefined, undefined);
+        var segiTiga = new Triangle(pointA, pointB, pointC, grid.randomColor(), undefined);
         segiTiga.draw(grid);
         segi3 = segiTiga;
     };
@@ -370,7 +370,7 @@ function init() {
             var x = get('inputRefXSquare').value;
 
             var l1 = new Line(new Point(grid.convertX(x), 0, true),
-                    new Point(grid.convertX(x), grid.canvas.height, true), false, false, "blue");
+                    new Point(grid.convertX(x), grid.canvas.height, true), false, false, grid.randomColor());
             l1.draw(grid);
 
             segi4.reflectionX(x, grid);
@@ -384,7 +384,7 @@ function init() {
             var y = get('inputRefYSquare').value;
 
             var l1 = new Line(new Point(0, grid.convertY(y), true),
-                    new Point(grid.canvas.width, grid.convertY(y), true), false, false, "blue");
+                    new Point(grid.canvas.width, grid.convertY(y), true), false, false, grid.randomColor());
             l1.draw(grid);
 
             segi4.reflectionY(y, grid);
@@ -399,11 +399,11 @@ function init() {
             var xy2 = get('inputRefXY2Square').value;
 
             var l1 = new Line(new Point(grid.convertX(xy1), 0, true),
-                    new Point(grid.convertX(xy1), grid.canvas.height, true), false, false, "blue");
+                    new Point(grid.convertX(xy1), grid.canvas.height, true), false, false, grid.randomColor());
             l1.draw(grid);
 
             var l2 = new Line(new Point(0, grid.convertY(xy2), true),
-                    new Point(grid.canvas.width, grid.convertY(xy2), true), false, false, "blue");
+                    new Point(grid.canvas.width, grid.convertY(xy2), true), false, false, grid.randomColor());
             l2.draw(grid);
 
             segi4.reflectionXY(xy1, xy2, grid);
@@ -441,7 +441,7 @@ function init() {
             var x = get('inputRefXTriangle').value;
 
             var l1 = new Line(new Point(grid.convertX(x), 0, true),
-                    new Point(grid.convertX(x), grid.canvas.height, true), false, false, "blue");
+                    new Point(grid.convertX(x), grid.canvas.height, true), false, false, grid.randomColor());
             l1.draw(grid);
 
             segi3.reflectionX(x, grid);
@@ -455,7 +455,7 @@ function init() {
             var y = get('inputRefYTriangle').value;
 
             var l1 = new Line(new Point(0, grid.convertY(y), true),
-                    new Point(grid.canvas.width, grid.convertY(y), true), false, false, "blue");
+                    new Point(grid.canvas.width, grid.convertY(y), true), false, false, grid.randomColor());
             l1.draw(grid);
 
             segi3.reflectionY(y, grid);
@@ -470,11 +470,11 @@ function init() {
             var xy2 = get('inputRefXY2Triangle').value;
 
             var l1 = new Line(new Point(grid.convertX(xy1), 0, true),
-                    new Point(grid.convertX(xy1), grid.canvas.height, true), false, false, "blue");
+                    new Point(grid.convertX(xy1), grid.canvas.height, true), false, false, grid.randomColor());
             l1.draw(grid);
 
             var l2 = new Line(new Point(0, grid.convertY(xy2), true),
-                    new Point(grid.canvas.width, grid.convertY(xy2), true), false, false, "blue");
+                    new Point(grid.canvas.width, grid.convertY(xy2), true), false, false, grid.randomColor());
             l2.draw(grid);
 
             segi3.reflectionXY(xy1, xy2, grid);
@@ -502,7 +502,7 @@ function init() {
             var yr = get('inputRotateSquareYr').value;
             var deg = get('inputRotateSquareDeg').value;
             
-            var pR = new Point(xr, yr, false, 'p', 'red');
+            var pR = new Point(xr, yr, false, 'p', grid.randomColor());
             pR.draw(grid);
             
             segi4.rotate(xr, yr, deg, grid);
@@ -542,7 +542,7 @@ function init() {
         y = grid.reconvertY(y);
         var po = new Point(x, y, false);
         po.draw(grid);
-        grid.arrObject.push(po);
+        
         arrPoint.push(po);
     };
 
@@ -550,15 +550,22 @@ function init() {
     btnDrawObject.onclick = function() {
         canvas.removeEventListener('mousedown', mousehandler);
         if(arrPoint.length === 2) {
-            var line = new Line(arrPoint[0], arrPoint[1]);
+            var line = new Line(arrPoint[0], arrPoint[1], false, true, grid.randomColor());
             line.draw(grid);
-            grid.arrObject.push(line);
         } else if(arrPoint.length > 2) {
-            var poly = new Polygon(arrPoint, "#000", undefined);
+            var poly = new Polygon(arrPoint, "#000", grid.randomColor());
             poly.draw(grid);    
         }
         
         arrPoint = new Array();
+    };
+
+    var btnTranslasiClip = get('buttontranslasiclip');
+    btnTranslasiClip.onclick = function() {
+        var xt = get('translasiClipXt').value;
+        var yt = get('translasiClipYt').value;
+
+        clipObject.translate(xt, yt, grid);
     };
     
 }

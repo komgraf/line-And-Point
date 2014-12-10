@@ -25,46 +25,6 @@ Square.prototype.constructor = Square;
 
 Square.prototype.draw = Polygon.draw(gridObject);
 
-
-/**
- * Method untuk menggambar garis di canvas
- * @param {Grid} gridObject
- */
-// Square.prototype.draw = function(gridObject) {
-
-//     this.pointA.draw(gridObject);
-//     this.pointB.draw(gridObject);
-//     this.pointC.draw(gridObject);
-//     this.pointD.draw(gridObject);
-
-//     var x1 = (this.pointA.isReal) ? this.pointA.x : gridObject.convertX(this.pointA.x);
-//     var y1 = (this.pointA.isReal) ? this.pointA.y : gridObject.convertY(this.pointA.y);
-//     var x2 = (this.pointB.isReal) ? this.pointB.x : gridObject.convertX(this.pointB.x);
-//     var y2 = (this.pointB.isReal) ? this.pointB.y : gridObject.convertY(this.pointB.y);
-//     var x3 = (this.pointC.isReal) ? this.pointC.x : gridObject.convertX(this.pointC.x);
-//     var y3 = (this.pointC.isReal) ? this.pointC.y : gridObject.convertY(this.pointC.y);
-//     var x4 = (this.pointD.isReal) ? this.pointD.x : gridObject.convertX(this.pointD.x);
-//     var y4 = (this.pointD.isReal) ? this.pointD.y : gridObject.convertY(this.pointD.y);
-
-//     var ctx = gridObject.ctx;
-//     ctx.strokeStyle = this.lineColor;
-//     ctx.beginPath();
-//     ctx.moveTo(x1, y1);
-//     ctx.lineTo(x2, y2);
-//     ctx.lineTo(x3, y3);
-//     ctx.lineTo(x4, y4);
-//     ctx.closePath();
-//     ctx.stroke();
-
-//     if (this.fillColor !== undefined) {
-//         ctx.fillStyle = this.fillColor;
-//         ctx.fill();
-//     }
-    
-//     gridObject.arrObject.push(this);
-
-// };
-
 /**
  * Method untuk melakukan translasi pada segiempat
  * @param {double} xt
@@ -266,6 +226,7 @@ Square.prototype.reflectionXY = function( x, y, gridObject ) {
  * @returns {undefined}
  */
 Square.prototype.rotate = function(xr, yr, rDeg, gridObject) {
+    
     
     rDeg = gridObject.degToRad(rDeg);
     

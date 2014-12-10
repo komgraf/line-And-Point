@@ -11,7 +11,13 @@ function Clipper(xMin, yMin, xMax, yMax, isReal) {
     this.yMin = yMin;
     this.yMax = yMax;
     this.isReal = isReal;
+
+    Shape.call(this);
 }
+
+Clipper.prototype = Object.create(Shape.prototype);
+
+Clipper.prototype.constructor = Clipper;
 
 Clipper.prototype.draw = function(gridObject) {
 
@@ -40,8 +46,12 @@ Clipper.prototype.clip = function(gridObject) {
 
     for (var i = 0; i < arrObject.length; i++) {
         var obj = arrObject[i];
+
+        /*  LOGGING
         console.log(obj);
         console.log('i : ' + i);
+        */
+
         if (obj instanceof Point) {
 
             if (this.clipPoint(obj)) {
@@ -57,6 +67,8 @@ Clipper.prototype.clip = function(gridObject) {
 
         if(obj instanceof Polygon) {
             obj.convertToGridScale(gridObject);
+            var arrPoint = new Array();
+
             for(var k = 0; k<obj.arrPoint.length; k++) {
                 if((k+1) < obj.arrPoint.length) {
                     var p1 = obj.arrPoint[k];
@@ -66,18 +78,36 @@ Clipper.prototype.clip = function(gridObject) {
                     var p2 = obj.arrPoint[0];
                 }
 
+                /* LOGGING
                 console.log('p1');
                 console.log(p1);
                 console.log('p2');
                 console.log(p2);
-                
+                */
+
                 var line = new Line(p1, p2);
+
+                /* LOGGING
                 console.log(line);
+                */
+
                 var objRet = this.clipLine(line);
-                if (objRet !== null) {
-                    arrVisibleObject.push(objRet);
+                if(objRet !== null) {
+                    if(!this.isPointExistInArray(objRet.pointA, arrPoint)) {
+                        arrPoint.push(objRet.pointA);
+                    }
+                    if(!this.isPointExistInArray(objRet.pointB, arrPoint)) {
+                        arrPoint.push(objRet.pointB);
+                    }    
                 }
             }
+
+            if(arrPoint.length > 0) {
+                var polygon = new Polygon(arrPoint, obj.lineColor, obj.fillColor);
+                arrVisibleObject.push(polygon);
+            }
+            
+
         }
         
     }
@@ -113,88 +143,30 @@ Clipper.prototype.clipLine = function(lineObject) {
     // console.log('LRBTEnd : '+LRBTEnd[0]+LRBTEnd[1]+LRBTEnd[2]+LRBTEnd[3]);
 
     if (this.isLineVisible(LRBTStart, LRBTEnd)) {
+
         if (this.getLRBTValue(LRBTStart) === 0 && this.getLRBTValue(LRBTEnd) === 0) {
             return lineObject;
         }
 
         if (this.getLRBTValue(LRBTStart) !== 0) {
-            var pointA = new Point();
-            pointA.isReal = lineObject.pointA.isReal;
-            
-            if (LRBTStart[0] === 1) {
-                var yp1 = parseFloat(yStart) + (parseFloat(gradien) * (parseFloat(this.xMin) - parseFloat(xStart)));
-                pointA.y = (parseFloat(this.validY(yp1)));
-                pointA.x = (isNaN(pointA.x)) ? parseFloat(this.xMin) : parseFloat(pointA.x);
-                // console.log('start yp1 : ' + yp1);
-            } 
-            if (LRBTStart[1] === 1) {
-                var yp2 = parseFloat(yStart) + (parseFloat(gradien) * (parseFloat(this.xMax) - parseFloat(xStart)));
-                pointA.y = parseFloat(this.validY(yp2));
-                pointA.x = (isNaN(pointA.x)) ? parseFloat(this.xMax) : parseFloat(pointA.x);
-                // console.log('start yp2 : ' + yp2);
-            } 
-            if (LRBTStart[2] === 1) {
-                var xp1 = parseFloat(xStart) + ((parseFloat(this.yMin) - parseFloat(yStart)) / parseFloat(gradien));
-                pointA.x = this.validX(xp1);
-                pointA.y = (isNaN(pointA.y)) ? parseFloat(this.yMin) : parseFloat(pointA.y);
-                // console.log('start xp1 : ' + xp1);
-            }
-            if (LRBTStart[3] === 1) {
-                var xp2 = parseFloat(xStart) + ((parseFloat(this.yMax) - parseFloat(yStart)) / parseFloat(gradien));
-                pointA.x = parseFloat(this.validX(xp2));
-                pointA.y = (isNaN(pointA.y)) ? parseFloat(this.yMax) : parseFloat(pointA.y);
-                // console.log('start xp2 : ' + xp2);
-            }
-
-            resultLine.pointA = pointA;
+            resultLine.pointA = this.getLinePoint(LRBTStart, lineObject.pointA, gradien);
             // console.log(pointA);
-
         } else {
             resultLine.pointA = lineObject.pointA;
             resultLine.startArrow = lineObject.startArrow;
         }
 
         if (this.getLRBTValue(LRBTEnd) !== 0) {
-            var pointB = new Point();
-            pointB.isReal = lineObject.pointB.isReal;
+            resultLine.pointB = this.getLinePoint(LRBTEnd, lineObject.pointB, gradien);
             // console.log(pointB);
-
-            if (LRBTEnd[0] === 1) {
-                var yp1 = yEnd + (gradien * (this.xMin - xEnd));
-                pointB.y = parseFloat(this.validY(yp1));
-                pointB.x = (isNaN(pointB.x)) ? parseFloat(this.xMin) : parseFloat(pointB.x);
-                // console.log('yp1 : ' + yp1);
-            }
-            if (LRBTEnd[1] === 1) {
-                var yp2 = yEnd + (gradien * (this.xMax - xEnd));
-                pointB.y = parseFloat(this.validY(yp2));
-                pointB.x = (isNaN(pointB.x)) ? parseFloat(this.xMax) : parseFloat(pointB.x);
-                // console.log('yp2 : ' + yp2);
-            }
-            if (LRBTEnd[2] === 1) {
-                var xp1 = xEnd + ((this.yMin - yEnd) / gradien);
-                pointB.x = parseFloat(this.validX(xp1));
-                pointB.y = (isNaN(pointB.y)) ? parseFloat(this.yMin) : parseFloat(pointB.y);
-                // console.log('xp1 : ' + xp1);
-            }
-            if (LRBTEnd[3] === 1) {
-                var xp2 = xEnd + ((this.yMax - yEnd) / gradien);
-                pointB.x = parseFloat(this.validX(xp2));
-                pointB.y = (isNaN(pointB.y)) ? parseFloat(this.yMax) : parseFloat(pointB.y);
-                // console.log('xp2 : ' + xp2);
-            }
-
-            resultLine.pointB = pointB;
-            // console.log(pointB);
-
         } else {
             resultLine.pointB = lineObject.pointB;
             resultLine.endArrow = lineObject.endArrow;
         }
     }
-
-    // console.log('pointA' + resultLine.pointA);
-    // console.log('pointB' + resultLine.pointB);
+    // console.log('pointA : ' + resultLine.pointA.x+", "+resultLine.pointA.y);
+    // console.log('pointB : ' + resultLine.pointB.x+", "+resultLine.pointB.y);
+    resultLine.color = lineObject.color;
 
     if(resultLine.pointA === undefined || resultLine.pointB === undefined) {
         return null;
@@ -253,6 +225,47 @@ Clipper.prototype.getLRBTValue = function(arrLRBT) {
     return hasil;
 };
 
+Clipper.prototype.getLinePoint = function(LRBTValue, replacedPointObject, gradien) {
+
+    var xBatas = parseFloat(replacedPointObject.x);
+    var yBatas = parseFloat(replacedPointObject.y);
+
+    // console.log("Batas : "+xBatas+", "+yBatas);
+
+    var resultPoint = new Point();
+    resultPoint.isReal = replacedPointObject.isReal;
+    resultPoint.color = replacedPointObject.color;
+
+    if (LRBTValue[0] === 1) {
+        var yp1 = parseFloat(yBatas) + (parseFloat(gradien) * (parseFloat(this.xMin) - parseFloat(xBatas)));
+        resultPoint.y = (parseFloat(this.validY(yp1)));
+        resultPoint.x = (isNaN(resultPoint.x)) ? parseFloat(this.xMin) : parseFloat(resultPoint.x);
+        // console.log('start yp1 : ' + yp1);
+    } 
+    if (LRBTValue[1] === 1) {
+        var yp2 = parseFloat(yBatas) + (parseFloat(gradien) * (parseFloat(this.xMax) - parseFloat(xBatas)));
+        resultPoint.y = parseFloat(this.validY(yp2));
+        resultPoint.x = (isNaN(resultPoint.x)) ? parseFloat(this.xMax) : parseFloat(resultPoint.x);
+        // console.log('start yp2 : ' + yp2);
+    } 
+    if (LRBTValue[2] === 1) {
+        var xp1 = parseFloat(xBatas) + ((parseFloat(this.yMin) - parseFloat(yBatas)) / parseFloat(gradien));
+        resultPoint.x = parseFloat(this.validX(xp1));
+        resultPoint.y = (isNaN(resultPoint.y)) ? parseFloat(this.yMin) : parseFloat(resultPoint.y);
+        // console.log('start xp1 : ' + xp1);
+    }
+    if (LRBTValue[3] === 1) {
+        var xp2 = parseFloat(xBatas) + ((parseFloat(this.yMax) - parseFloat(yBatas)) / parseFloat(gradien));
+        resultPoint.x = parseFloat(this.validX(xp2));
+        resultPoint.y = (isNaN(resultPoint.y)) ? parseFloat(this.yMax) : parseFloat(resultPoint.y);
+        // console.log('start xp2 : ' + xp2);
+    }
+
+    // console.log('resultPoint: '+resultPoint.x+", "+resultPoint.y);
+
+    return resultPoint;
+};
+
 Clipper.prototype.isLineVisible = function(LRBTStart, LRBTEnd) {
     for (var i = 0; i < LRBTStart.length; i++) {
         if (LRBTStart[i] && LRBTEnd[i]) {
@@ -273,4 +286,39 @@ Clipper.prototype.clipPoint = function(pointObject) {
 
     return true;
 
+};
+
+Clipper.prototype.translate = function(xt, yt, gridObject) {
+
+    var arrObj = gridObject.arrObject;
+
+    for (var i = arrObj.length - 1; i >= 0; i--) {
+        arrObj[i].translate(xt, yt, gridObject);
+    };
+    
+    xMin = parseFloat(this.xMin) + parseFloat(xt);
+    xMax = parseFloat(this.xMax) + parseFloat(xt);
+    yMin = parseFloat(this.yMin) + parseFloat(yt);
+    yMax = parseFloat(this.yMax) + parseFloat(yt);
+
+    // console.log('xMin : '+xMin);
+    // console.log('xMax : '+xMax);
+    // console.log('yMin : '+yMin);
+    // console.log('yMax : '+yMax);
+
+    var newClip = new Clipper(xMin, yMin, xMax, yMax, this.isReal);
+    newClip.draw(gridObject);
+
+
+};
+
+Clipper.prototype.rotate
+
+Clipper.prototype.isPointExistInArray = function(objPoint, arrPoint) {
+    for (var i = arrPoint.length - 1; i >= 0; i--) {
+        if(objPoint.isEqual(arrPoint[i])) {
+            return true;
+        }
+    };
+    return false;
 };

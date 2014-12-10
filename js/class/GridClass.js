@@ -15,8 +15,10 @@ Grid.prototype.init = function() {
     this.x0 = this.canvas.height / 2;
     this.y0 = this.canvas.width / 2;
     this.ctx.font = "13px Georgia";
+    this.ctx.fillStyle = "#000";
     this.drawGrid();
     this.drawXY();
+    this.arrObject = new Array();
 };
 
 /**
@@ -150,6 +152,7 @@ Grid.prototype.getCoordinateTextFromReal = function(realX, realY) {
 };
 
 Grid.prototype.drawText = function(text, point) {
+
     if (point.isReal === true) {
         this.drawTextReal(text, point.x, point.y);
     } else {

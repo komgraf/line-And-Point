@@ -37,4 +37,19 @@ Point.prototype.draw = function(gridObject) {
     var text = gridObject.getCoordinateText(x.toFixed(2), y.toFixed(2));
     gridObject.drawText(this.name + text, this);
     
+    gridObject.arrObject.push(this);
+};
+
+Point.prototype.translate = function(xt, yt, gridObject) {
+    var newPoint = new Point(parseFloat(this.x) + parseFloat(xt), parseFloat(this.y) + parseFloat(yt), this.isReal);
+    newPoint.draw(gridObject);
+};
+
+Point.prototype.isEqual = function(object) {
+    if(object instanceof Point) {
+        if(object.x.toFixed(2) === this.x.toFixed(2) && object.y.toFixed(2) === this.y.toFixed(2)) {
+            return true;
+        }
+    }
+    return false;
 };

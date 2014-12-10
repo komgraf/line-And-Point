@@ -52,6 +52,7 @@ Line.prototype.draw = function(gridObject) {
     ctx.stroke();
     
     this.drawArrow(ctx, x1, y1, x2, y2);
+    gridObject.arrObject.push(this);
     
 };
 
@@ -85,3 +86,12 @@ Line.prototype.drawArrowHead = function(ctx, x, y, radians) {
     ctx.restore();
     ctx.fill();
 };
+
+Line.prototype.translate = function(xt, yt, gridObject) {
+
+    var newPointA = new Point(this.pointA.x + parseFloat(xt), this.pointA.y + parseFloat(yt), this.pointA.isReal);
+    var newPointB = new Point(this.pointB.x + parseFloat(xt), this.pointB.y + parseFloat(yt), this.pointB.isReal);
+
+    var newLine = new Line(newPointA, newPointB, this.startArrow, this.endArrow, this.color);
+    newLine.draw(gridObject);
+}

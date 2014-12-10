@@ -51,6 +51,21 @@ Polygon.prototype.draw = function(gridObject) {
     
 };
 
+Polygon.prototype.translate = function(xt, yt, gridObject) {
+
+    var arrPoint = new Array();
+
+    for (var i = this.arrPoint.length - 1; i >= 0; i--) {
+        var oldPoint = this.arrPoint[i];
+        var p = new Point(oldPoint.x + parseFloat(xt), oldPoint.y + parseFloat(yt), oldPoint.isReal);
+        arrPoint.push(p);
+    };
+
+    var polygon = new Polygon(arrPoint, this.lineColor, this.fillColor);
+
+    polygon.draw(gridObject);
+};
+
 Polygon.prototype.convertToGridScale = function(gridObject) {
     for(var i = 0; i<this.arrPoint.length; i++) {
         var pointObject = this.arrPoint[i];
