@@ -227,7 +227,6 @@ Square.prototype.reflectionXY = function( x, y, gridObject ) {
  */
 Square.prototype.rotate = function(xr, yr, rDeg, gridObject) {
     
-    
     rDeg = gridObject.degToRad(rDeg);
     
     var xA = this.rotateX(this.pointA.x, this.pointA.y, xr, yr, rDeg);
@@ -249,4 +248,4 @@ Square.prototype.rotate = function(xr, yr, rDeg, gridObject) {
     
 };
 
-Triangle.prototype.convertToGridScale = Polygon.convertToGridScale(gridObject);
+Square.prototype.convertToGridScale = Polygon.convertToGridScale(gridObject);
