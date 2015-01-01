@@ -19,3 +19,10 @@ Aplikasi untuk Mata kuliah Komgraf
 1. Penambahan class Shape sebagai base class untuk class Circle, class Square, dan class Triangle
 2. Penambahan fungsi translasi, scaling, shear, refleksi, dan rotasi pada class Circle, class Square, dan class Triangle
 3. Penambahan gambar "fungraph" pada header
+
+<h3>V1.0</h3>
+1. Penambahan class Clipper untuk melakukan fungsi clipping dan viewport
+2. Penambahan class Polygon sebagai turunan dari class Shape
+3. Penggantian base Class untuk class Square dan Triangle ke class Polygon
+
+<b>NOTE : Not every function is tested, so be carefull of hidden bugs</b>
