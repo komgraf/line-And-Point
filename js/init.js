@@ -221,7 +221,7 @@ function init() {
         var pointC = new Point(inputKotakX3, inputKotakY3, false, "C");
         var pointD = new Point(inputKotakX4, inputKotakY4, false, "D");
 
-        var segiEmpat = new Square(pointA, pointB, pointC, pointD, grid.randomColor(), undefined);
+        var segiEmpat = new Square(pointA, pointB, pointC, pointD, grid.randomColor(), grid.randomColor());
         segiEmpat.draw(grid);
         segi4 = segiEmpat;
     };
@@ -566,6 +566,21 @@ function init() {
         var yt = get('translasiClipYt').value;
 
         clipObject.translate(xt, yt, grid);
+    };
+    
+    var btnRotasiClip = get('buttonRotasiClip');
+    btnRotasiClip.onclick = function() {
+        var xr = get('rotasiClipXr').value;
+        var yr = get('rotasiClipYr').value;
+        var rDeg = get('rotasiClipDeg').value;
+        
+        clipObject.rotate(xr, yr, rDeg, grid);
+    };
+    
+    var btnScalingClip = get('buttonScalingClip');
+    btnScalingClip.onclick = function() {
+        var t = get('scalingClip').value;
+        clipObject.scale(t, grid);
     };
     
 }

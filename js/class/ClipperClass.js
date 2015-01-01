@@ -16,34 +16,49 @@ function Clipper(xMin, yMin, xMax, yMax, isReal) {
     this.yMax = yMax;
     this.isReal = isReal;
     this.arrObject = new Array();
+    this.arrPoint = new Array();
+    this.appendPoint();
     Shape.call(this);
 }
 
 Clipper.prototype = Object.create(Shape.prototype);
-
 Clipper.prototype.constructor = Clipper;
+
+/**
+ * Method untuk memasukkan nilai koordinat batas area clipping ke dalam properti <code>arrPoint</code>
+ */
+Clipper.prototype.appendPoint = function() {
+    this.arrPoint[0] = new Point(this.xMin, this.yMin, this.isReal);
+    this.arrPoint[1] = new Point(this.xMin, this.yMax, this.isReal);
+    this.arrPoint[2] = new Point(this.xMax, this.yMax, this.isReal);
+    this.arrPoint[3] = new Point(this.xMax, this.yMin, this.isReal);
+};
 
 /**
  * Method untuk menggambar area clipping di canvas
  * @param {Grid} gridObject Objek grid yang mewakili canvas
  */
 Clipper.prototype.draw = function(gridObject) {
-
-    var xMin = (this.isReal) ? this.xMin : gridObject.convertX(this.xMin);
-    var yMin = (this.isReal) ? this.yMin : gridObject.convertY(this.yMin);
-    var xMax = (this.isReal) ? this.xMax : gridObject.convertX(this.xMax);
-    var yMax = (this.isReal) ? this.yMax : gridObject.convertY(this.yMax);
-
+    
+    var arrDrawPoint = new Array();
+    
+    for(var i = 0; i<this.arrPoint.length; i++) {
+        var point = new Point();
+        point.x = (this.isReal) ? this.arrPoint[i].x : gridObject.convertX(this.arrPoint[i].x);
+        point.y = (this.isReal) ? this.arrPoint[i].y : gridObject.convertY(this.arrPoint[i].y);
+        arrDrawPoint.push(point);
+    }
+    
     var ctx = gridObject.ctx;
     ctx.strokeStyle = "#000";
     ctx.beginPath();
-    ctx.moveTo(xMin, yMin);
-    ctx.lineTo(xMin, yMax);
-    ctx.lineTo(xMax, yMax);
-    ctx.lineTo(xMax, yMin);
+    ctx.moveTo(arrDrawPoint[0].x, arrDrawPoint[0].y);
+    for(var i = 1; i<arrDrawPoint.length; i++) {
+        ctx.lineTo(arrDrawPoint[i].x, arrDrawPoint[i].y);
+    }
     ctx.closePath();
     ctx.stroke();
-
+    
 };
 
 /**
@@ -53,25 +68,21 @@ Clipper.prototype.draw = function(gridObject) {
 Clipper.prototype.clip = function(gridObject) {
 
     var arrObj = gridObject.arrObject;
-
     for (var i = arrObj.length - 1; i >= 0; i--) {
         var obj = this.clipObject(arrObj[i]);
         if (obj !== null) {
-            this.arrObj.push(obj);
+            this.arrObject.push(obj);
         }
     }
-    
+
     gridObject.clear();
     gridObject.arrObject = this.arrObject;
-
     for (var i = this.arrObject.length - 1; i >= 0; i--) {
         this.arrObject[i].draw(gridObject);
     }
 
     this.draw(gridObject);
-
 };
-
 /**
  * Method untuk melakukan clipping objek. Pada method ini objek akan diclip berdasarkan tipe objeknya.
  * @param {Point|Line|Polygon} obj Instance atau turunan class Point, class Line, atau class Polygon
@@ -89,7 +100,6 @@ Clipper.prototype.clipObject = function(obj) {
         return null;
     }
 };
-
 /**
  * Method untuk melakukan clipping pada objek Point.
  * Pada method ini dilakukan pengecekan apakah objek <code>pointObject</code>
@@ -99,12 +109,10 @@ Clipper.prototype.clipObject = function(obj) {
  * jika objek <code>pointObject</code> berada di luar area clipping
  */
 Clipper.prototype.clipPoint = function(pointObject) {
-    
+
     var arrLRBT = this.getPointLRBT(pointObject);
     return ((this.calculateLRBTValue(arrLRBT)) === 0) ? pointObject : null;
-
 };
-
 /**
  * Method untuk melakukan clipping pada objek Line.
  * Pada method ini akan dilakukan pengecekan terhadap posisi garis.
@@ -121,7 +129,6 @@ Clipper.prototype.clipPoint = function(pointObject) {
 Clipper.prototype.clipLine = function(lineObject) {
     var arrLRBTStart = this.getPointLRBT(lineObject.pointA);
     var arrLRBTEnd = this.getPointLRBT(lineObject.pointB);
-
     if (!this.calculateLineVisible(arrLRBTStart, arrLRBTEnd)) {
         return null;
     } else if (this.isLineFullyVisible(arrLRBTStart, arrLRBTEnd)) {
@@ -130,7 +137,6 @@ Clipper.prototype.clipLine = function(lineObject) {
         return this.clipLinePartial(lineObject);
     }
 };
-
 /**
  * Method untuk melakukan clipping pada objek Line yang sebagian berada
  * pada area clipping dan sebagian di luar area clipping
@@ -141,9 +147,7 @@ Clipper.prototype.clipLinePartial = function(lineObject) {
     var arrLRBTStart = this.getPointLRBT(lineObject.pointA);
     var arrLRBTEnd = this.getPointLRBT(lineObject.pointB);
     var gradien = this.calculateLineGradien(lineObject);
-
     var resultLine = new Line();
-
     if (this.calculateLRBTValue(arrLRBTStart) === 0) {
         resultLine.pointA = lineObject.pointA;
         resultLine.startArrow = lineObject.startArrow;
@@ -171,31 +175,26 @@ Clipper.prototype.clipLinePartial = function(lineObject) {
 Clipper.prototype.getIntersectionPoint = function(replacedPointObject, LRBTValue, gradien) {
 
     var resultPoint = new Point();
-
     if (LRBTValue[0] === 1) {
         var yp1 = this.calcYonXMinIntersection(replacedPointObject, gradien);
-
         resultPoint.y = (parseFloat(this.validY(yp1)));
         resultPoint.x = (isNaN(resultPoint.x)) ? parseFloat(this.xMin) : parseFloat(resultPoint.x);
         // console.log('start yp1 : ' + yp1);
     }
     if (LRBTValue[1] === 1) {
         var yp2 = this.calcYonXMaxIntersection(replacedPointObject, gradien);
-
         resultPoint.y = parseFloat(this.validY(yp2));
         resultPoint.x = (isNaN(resultPoint.x)) ? parseFloat(this.xMax) : parseFloat(resultPoint.x);
         // console.log('start yp2 : ' + yp2);
     }
     if (LRBTValue[2] === 1) {
         var xp1 = this.calcXonYMinIntersection(replacedPointObject, gradien);
-
         resultPoint.x = parseFloat(this.validX(xp1));
         resultPoint.y = (isNaN(resultPoint.y)) ? parseFloat(this.yMin) : parseFloat(resultPoint.y);
         // console.log('start xp1 : ' + xp1);
     }
     if (LRBTValue[3] === 1) {
         var xp2 = this.calcXonYMaxIntersection(replacedPointObject, gradien);
-
         resultPoint.x = parseFloat(this.validX(xp2));
         resultPoint.y = (isNaN(resultPoint.y)) ? parseFloat(this.yMax) : parseFloat(resultPoint.y);
         // console.log('start xp2 : ' + xp2);
@@ -204,7 +203,6 @@ Clipper.prototype.getIntersectionPoint = function(replacedPointObject, LRBTValue
     // console.log('resultPoint: '+resultPoint.x+", "+resultPoint.y);
 
     return resultPoint;
-
 };
 
 /**
@@ -216,7 +214,6 @@ Clipper.prototype.getIntersectionPoint = function(replacedPointObject, LRBTValue
 Clipper.prototype.calcYonXMinIntersection = function(pointObject, gradien) {
 
     var result = parseFloat(pointObject.y) + (parseFloat(gradien) * (parseFloat(this.xMin) - parseFloat(pointObject.x)));
-
     return result;
 };
 
@@ -229,7 +226,6 @@ Clipper.prototype.calcYonXMinIntersection = function(pointObject, gradien) {
 Clipper.prototype.calcYonXMaxIntersection = function(pointObject, gradien) {
 
     var result = parseFloat(pointObject.y) + (parseFloat(gradien) * (parseFloat(this.xMax) - parseFloat(pointObject.x)));
-
     return result;
 };
 
@@ -242,7 +238,6 @@ Clipper.prototype.calcYonXMaxIntersection = function(pointObject, gradien) {
 Clipper.prototype.calcXonYMinIntersection = function(pointObject, gradien) {
 
     var result = parseFloat(pointObject.x) + ((parseFloat(this.yMin) - parseFloat(pointObject.y)) / parseFloat(gradien));
-
     return result;
 };
 
@@ -255,7 +250,6 @@ Clipper.prototype.calcXonYMinIntersection = function(pointObject, gradien) {
 Clipper.prototype.calcXonYMaxIntersection = function(pointObject, gradien) {
 
     var result = parseFloat(pointObject.x) + ((parseFloat(this.yMax) - parseFloat(pointObject.y)) / parseFloat(gradien));
-
     return result;
 };
 
@@ -283,18 +277,61 @@ Clipper.prototype.clipPolygon = function(polygonObject) {
  */
 Clipper.prototype.clipPartPolygon = function(arrPolygonLine) {
     var arrResultPoint = new Array();
-    for (var i = arrPolygonLine.length - 1; i >= 0; i--) {
-        var line = this.clipLine(arrPolygonLine[i]);
-        if (line !== null) {
-            if (!this.isPointExistInArray(line.pointA, arrResultPoint)) {
-                arrResultPoint.push(line.pointA);
+    for (var i = 0; i < arrPolygonLine.length; i++) {
+
+        if (this.isLineVisible(arrPolygonLine[i]) === false) {
+            var cornerPoint = this.calculateCornerPoint(arrPolygonLine[i]);
+            if (cornerPoint !== null) {
+                arrResultPoint.push(cornerPoint);
             }
-            if (!this.isPointExistInArray(line.pointB, arrResultPoint)) {
-                arrResultPoint.push(line.pointB);
+        } else {
+            var line = this.clipLine(arrPolygonLine[i]);
+
+            if (line !== null) {
+                if (!this.isPointExistInArray(line.pointA, arrResultPoint)) {
+                    arrResultPoint.push(line.pointA);
+                }
+                if (!this.isPointExistInArray(line.pointB, arrResultPoint)) {
+                    arrResultPoint.push(line.pointB);
+                }
             }
         }
     }
+
     return arrResultPoint;
+};
+
+/**
+ * Method untuk menentukan titik sudut mana yang masuk ke dalam area sebuah 
+ * objek Polygon. Method ini masih belum sempurna, dan masih memiliki bug.
+ * @param {Line} lineObject Objek Line yang tidak masuk ke dalam area Clipping
+ * @returns {Point|null} Objek Point, jika titik sudut dapat ditentukan <br>
+ * null, jika titik sudut tidak dapat ditentukan
+ */
+Clipper.prototype.calculateCornerPoint = function(lineObject) {
+    var LRBTStart = this.arrLRBTtoString(this.getPointLRBT(lineObject.pointA));
+    var LRBTEnd = this.arrLRBTtoString(this.getPointLRBT(lineObject.pointB));
+    var left = "1000";
+    var right = "0100";
+    var bottom = "0010";
+    var top = "0001";
+    
+    // jika garis melintang dari sisi kiri area clipping ke sisi atas area clipping
+    if ((LRBTStart === left && LRBTEnd === top) || (LRBTEnd === left && LRBTStart === top)) {
+        return new Point(this.xMin, this.yMax);
+    } else // jika garis melintang dari sisi kiri area clipping ke sisi bawah area clipping
+        if ((LRBTStart === left && LRBTEnd === bottom) || (LRBTEnd === left && LRBTStart === bottom)) {
+            return new Point(this.xMin, this.yMin);
+    } else // jika garis melintang dari sisi kanan area clipping ke sisi bawah area clipping
+        if ((LRBTStart === right && LRBTEnd === bottom) || (LRBTEnd === right && LRBTStart === bottom)) {
+            return new Point(this.xMax, this.yMin);
+    } else // jika garis melintang dari sisi kanan area clipping ke sisi atas area clipping
+        if ((LRBTStart === right && LRBTEnd === top) || (LRBTEnd === right && LRBTStart === top)) {
+            return new Point(this.xMax, this.yMax);
+    } else {
+        return null;
+    }
+
 };
 
 /**
@@ -328,7 +365,6 @@ Clipper.prototype.getLRBT = function(x, y) {
     arrLRBT.push((x <= this.xMax) ? 0 : 1);
     arrLRBT.push((y >= this.yMin) ? 0 : 1);
     arrLRBT.push((y <= this.yMax) ? 0 : 1);
-
     return arrLRBT;
 };
 
@@ -346,6 +382,16 @@ Clipper.prototype.calculateLRBTValue = function(arrLRBT) {
 };
 
 /**
+ * Method untuk mengkonversi array LRBT menjadi String
+ * @param {Array} arrLRBT Array yang berisi nilai LRBT
+ * @returns {String} String yang berisi nilai LRBT
+ */
+Clipper.prototype.arrLRBTtoString = function(arrLRBT) {
+    var result = arrLRBT[0] + arrLRBT[1] + arrLRBT[2] + arrLRBT[3];
+    return result;
+};
+
+/**
  * Method untuk menghitung nilai gradien objek <code>lineObject</code>
  * @param {Line} lineObject Objek dari class Line
  * @returns {float} Nilai gradien garis
@@ -355,10 +401,8 @@ Clipper.prototype.calculateLineGradien = function(lineObject) {
     var yStart = parseFloat(lineObject.pointA.y);
     var xEnd = parseFloat(lineObject.pointB.x);
     var yEnd = parseFloat(lineObject.pointB.y);
-
     var gradien = parseFloat(yEnd) - parseFloat(yStart);
     gradien = parseFloat(gradien) / (parseFloat(xEnd) - parseFloat(xStart));
-
     return gradien;
 };
 
@@ -371,9 +415,8 @@ Clipper.prototype.calculateLineGradien = function(lineObject) {
  * False, jika seluruh objek <code>lineObject</code> berada di luar area clipping
  */
 Clipper.prototype.isLineVisible = function(lineObject) {
-    var arrLRBTStart = getPointLRBT(lineObject.pointA);
-    var arrLRBTEnd = getPointLRBT(lineObject.pointB);
-
+    var arrLRBTStart = this.getPointLRBT(lineObject.pointA);
+    var arrLRBTEnd = this.getPointLRBT(lineObject.pointB);
     return this.calculateLineVisible(arrLRBTStart, arrLRBTEnd);
 };
 
@@ -421,7 +464,6 @@ Clipper.prototype.isLineFullyVisible = function(arrLRBTStart, arrLRBTEnd) {
 Clipper.prototype.validX = function(x) {
     x = (parseFloat(x) > parseFloat(this.xMax)) ? this.xMax : x;
     x = (parseFloat(x) < parseFloat(this.xMin)) ? this.xMin : x;
-
     return x;
 };
 
@@ -434,7 +476,6 @@ Clipper.prototype.validX = function(x) {
 Clipper.prototype.validY = function(y) {
     y = (parseFloat(y) > parseFloat(this.yMax)) ? this.yMax : y;
     y = (parseFloat(y) < parseFloat(this.yMin)) ? this.yMin : y;
-
     return y;
 };
 
@@ -451,7 +492,7 @@ Clipper.prototype.isPointExistInArray = function(objPoint, arrPoint) {
             return true;
         }
     }
-    
+
     return false;
 };
 
@@ -462,13 +503,14 @@ Clipper.prototype.isPointExistInArray = function(objPoint, arrPoint) {
  */
 Clipper.prototype.arrPointToArrLine = function(arrPoint) {
     var arrLine = new Array();
-    for (var i = arrPoint.length - 1; i >= 0; i--) {
-        if (i === 0) {
-            var pointA = arrPoint[0];
-            var pointB = arrPoint[arrPoint.length - 1];
+    var pointA, pointB;
+    for (var i = 0; i < arrPoint.length; i++) {
+        if ((i + 1) < arrPoint.length) {
+            pointA = arrPoint[i];
+            pointB = arrPoint[i + 1];
         } else {
-            var pointA = arrPoint[i];
-            var pointB = arrPoint[i - 1];
+            pointA = arrPoint[i];
+            pointB = arrPoint[0];
         }
         var line = new Line(pointA, pointB);
         arrLine.push(line);
@@ -488,17 +530,16 @@ Clipper.prototype.arrPointToArrLine = function(arrPoint) {
  */
 Clipper.prototype.translate = function(xt, yt, gridObject) {
 
-    xMin = parseFloat(this.xMin) + parseFloat(xt);
-    xMax = parseFloat(this.xMax) + parseFloat(xt);
-    yMin = parseFloat(this.yMin) + parseFloat(yt);
-    yMax = parseFloat(this.yMax) + parseFloat(yt);
-
     var oldClipperSize = new Array(this.xMin, this.xMax, this.yMin, this.yMax);
-
-    var newClip = new Clipper(xMin, yMin, xMax, yMax, this.isReal);
-    newClip.arrObject = this.arrObject;
-    newClip.draw(gridObject);
-    newClip.drawObject(oldClipperSize, gridObject);
+    
+    this.xMin = parseFloat(this.xMin) + parseFloat(xt);
+    this.xMax = parseFloat(this.xMax) + parseFloat(xt);
+    this.yMin = parseFloat(this.yMin) + parseFloat(yt);
+    this.yMax = parseFloat(this.yMax) + parseFloat(yt);
+    this.appendPoint();
+    
+    this.draw(gridObject);
+    this.drawObject(oldClipperSize, gridObject);
 };
 
 /**
@@ -506,23 +547,33 @@ Clipper.prototype.translate = function(xt, yt, gridObject) {
  * objek di dalam area clipping ikut dirotasi
  * @param {float} xr Nilai koordinat sumbu X titik pusat rotasi
  * @param {float} yr Nilai koordinat sumbu Y titik pusat rotasi
- * @param {float} rDeg Besar rotasi yang dilakukan dalam satuan derajat
+ * @param {float} rDegNew Besar rotasi yang dilakukan dalam satuan derajat
  * @param {Grid} gridObject Objek dari class Grid
  */
 Clipper.prototype.rotate = function(xr, yr, rDeg, gridObject) {
-    rDeg = gridObject.degToRad(rDeg);
-
-    var xMin = this.rotateX(xMin, yMin, xr, yr, rDeg);
-    var yMin = this.rotateY(xMin, yMin, xr, yr, rDeg);
-    var xMax = this.rotateX(xMax, yMax, xr, yr, rDeg);
-    var yMax = this.rotateY(xMax, yMax, xr, yr, rDeg);
-
-    var oldClipperSize = new Array(this.xMin, this.xMax, this.yMin, this.yMax);
-
-    var newClip = new Clipper(xMin, yMin, xMax, yMax, this.isReal);
-    newClip.arrObject = this.arrObject;
-    newClip.draw(gridObject);
-    newClip.drawObject(oldClipperSize, gridObject);
+    
+    var rDegNew = gridObject.degToRad(rDeg);
+    
+    for (var i = 0; i < this.arrPoint.length; i++) {
+        var x = this.rotateX(this.arrPoint[i].x, this.arrPoint[i].y, xr, yr, rDegNew);
+        var y = this.rotateY(this.arrPoint[i].x, this.arrPoint[i].y, xr, yr, rDegNew);
+        this.arrPoint[i].x = x;
+        this.arrPoint[i].y = y;
+        console.log("Method: Clipper.rotate()");
+        console.log("Section : #1 loop");
+        console.log(this.arrPoint[i]);
+    }
+    
+    this.draw(gridObject);
+    for(var i = 0; i<this.arrObject.length; i++) {
+        if(this.arrObject[i] instanceof Point) {
+            if(this.arrObject[i].owner === undefined) {
+                this.arrObject[i].rotate(xr, yr, rDeg, gridObject);
+            }
+        } else {
+            this.arrObject[i].rotate(xr, yr, rDeg, gridObject);
+        }
+    }
 };
 
 /**
@@ -532,23 +583,20 @@ Clipper.prototype.rotate = function(xr, yr, rDeg, gridObject) {
  * @param {Grid} gridObject Objek dari class Grid
  */
 Clipper.prototype.scale = function(t, gridObject) {
-
+    
+    var oldClipperSize = new Array(this.xMin, this.xMax, this.yMin, this.yMax);
+    
     t = Math.abs(t);
     var dx = parseFloat(this.xMin) * parseFloat(t) - parseFloat(this.xMin);
     var dy = parseFloat(this.yMin) * parseFloat(t) - parseFloat(this.yMin);
-
-    var xMin = parseFloat(this.xMin) * parseFloat(t) - dx;
-    var xMax = parseFloat(this.xMax) * parseFloat(t) - dx;
-    var yMin = parseFloat(this.yMin) * parseFloat(t) - dy;
-    var yMax = parseFloat(this.yMax) * parseFloat(t) - dy;
-
-    var oldClipperSize = new Array(this.xMin, this.xMax, this.yMin, this.yMax);
-
-    var newClip = new Clipper(xMin, yMin, xMax, yMax, this.isReal);
-    newClip.arrObject = this.arrObject;
-    newClip.draw(gridObject);
-    newClip.drawObject(oldClipperSize, gridObject);
-
+    this.xMin = parseFloat(this.xMin) * parseFloat(t) - dx;
+    this.xMax = parseFloat(this.xMax) * parseFloat(t) - dx;
+    this.yMin = parseFloat(this.yMin) * parseFloat(t) - dy;
+    this.yMax = parseFloat(this.yMax) * parseFloat(t) - dy;
+    this.appendPoint();
+    
+    this.draw(gridObject);
+    this.drawObject(oldClipperSize, gridObject);
 };
 
 /**
@@ -559,25 +607,24 @@ Clipper.prototype.scale = function(t, gridObject) {
  */
 Clipper.prototype.drawObject = function(oldClipperSize, gridObject) {
     var arrNewObject = new Array();
-
     for (var i = this.arrObject.length - 1; i >= 0; i--) {
         var obj = this.arrObject[i];
-        if (obj instanceof Point) {
-            var retPoint = this.calculateNewPointPosition(obj, oldClipperSize);
-            arrNewObject.push(retPoint);
+        if (obj instanceof Polygon) {
+            var retPolygon = this.calculateNewPolygonPosition(obj, oldClipperSize);
+            arrNewObject.push(retPolygon);
         } else if (obj instanceof Line) {
             var retLine = this.calculateNewLinePosition(obj, oldClipperSize);
             arrNewObject.push(retLine);
-        } else if (obj instanceof Polgon) {
-            var retPolygon = this.calculateNewPolygonPosition(obj, oldClipperSize);
-            arrNewObject.push(retPolygon);
+        } else if (obj instanceof Point && obj.owner === undefined) {
+            var retPoint = this.calculateNewPointPosition(obj, oldClipperSize);
+            arrNewObject.push(retPoint);
         }
     }
-    
+
     for (var i = arrNewObject.length - 1; i >= 0; i--) {
         arrNewObject[i].draw(gridObject);
     }
-    
+
 };
 
 /**
@@ -599,9 +646,14 @@ Clipper.prototype.calculateNewPointPosition = function(objPoint, oldClipperSize)
     var vX2 = parseFloat(this.xMax);
     var vY1 = parseFloat(this.yMin);
     var vY2 = parseFloat(this.yMax);
-
-    objPoint.x = vX1 + ((wX - wX1) * (vX2 - vX1) / (wX2 - wX1));
-    objPoint.y = vY1 + ((wY - wY1) * (vY2 - vY1) / (wY2 - wY1));
+    objPoint.x = parseFloat(vX1) + ((parseFloat(wX) - parseFloat(wX1)) *
+            (parseFloat(vX2) - parseFloat(vX1)) / (parseFloat(wX2) - parseFloat(wX1)));
+    objPoint.y = parseFloat(vY1) + ((parseFloat(wY) - parseFloat(wY1)) *
+            (parseFloat(vY2) - parseFloat(vY1)) / (parseFloat(wY2) - parseFloat(wY1)));
+    
+    console.log("Method Clipper.calculateNewPointPosition()");
+    console.log(this.arrPoint);
+    console.log(objPoint);
     return objPoint;
 };
 
@@ -630,11 +682,11 @@ Clipper.prototype.calculateNewLinePosition = function(lineObject, oldClipperSize
 Clipper.prototype.calculateNewPolygonPosition = function(polygonObject, oldClipperSize) {
     var arrPoint = polygonObject.arrPoint;
     var arrNewPoint = new Array();
-    for (var i = arrPoint.length - 1; i >= 0; i--) {
-        var retPoint = this.calculateNewPoint(arrPoint[i], oldClipperSize);
+    for (var i = 0; i < arrPoint.length; i++) {
+        var retPoint = this.calculateNewPointPosition(arrPoint[i], oldClipperSize);
         arrNewPoint.push(retPoint);
     }
-    
+
     polygonObject.arrPoint = arrNewPoint;
     return polygonObject;
 };

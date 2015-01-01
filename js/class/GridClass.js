@@ -301,4 +301,26 @@ Grid.prototype.randomColor = function() {
     return warna[Math.floor((Math.random() * warna.length))];
 };
 
+Grid.prototype.isObjectExistInArray = function(obj, arrObj) {
+    for (var i = 0; i < arrObj.length; i++) {
+        if (arrObj[i] instanceof Polygon && obj instanceof Polygon) {
+            if (arrObj[i].isEqual(obj)) {
+                return true;
+            }
+        }
+        if (arrObj[i] instanceof Line && obj instanceof Line) {
+            if (arrObj[i].isEqual(obj)) {
+                return true;
+            }
+        }
+        if (arrObj[i] instanceof Point && obj instanceof Point) {
+            if (arrObj[i].isEqual(obj)) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+
+
 

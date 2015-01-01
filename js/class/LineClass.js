@@ -41,6 +41,9 @@ Line.prototype.draw = function(gridObject) {
     var ctx = gridObject.ctx;
     ctx.strokeStyle = this.color;
     
+    this.pointA.owner = "Line";
+    this.pointB.owner = "Line";
+    
     var x1 = (this.pointA.isReal) ? this.pointA.x : gridObject.convertX(this.pointA.x);
     var y1 = (this.pointA.isReal) ? this.pointA.y : gridObject.convertY(this.pointA.y);
     var x2 = (this.pointB.isReal) ? this.pointB.x : gridObject.convertX(this.pointB.x);
@@ -52,7 +55,10 @@ Line.prototype.draw = function(gridObject) {
     ctx.stroke();
     
     this.drawArrow(ctx, x1, y1, x2, y2);
-    gridObject.arrObject.push(this);
+    
+    if(!gridObject.isObjectExistInArray(this, gridObject.arrObject)) {
+        gridObject.arrObject.push(this);
+    }
     
 };
 
@@ -94,4 +100,28 @@ Line.prototype.translate = function(xt, yt, gridObject) {
 
     var newLine = new Line(newPointA, newPointB, this.startArrow, this.endArrow, this.color);
     newLine.draw(gridObject);
-}
+};
+
+Line.prototype.rotate = function(xr, yr, rDeg, gridObject) {
+    rDeg = gridObject.degToRad(rDeg);
+    
+    var xNewA = Shape.prototype.rotateX(this.pointA.x, this.pointA.y, xr, yr, rDeg);
+    var yNewA = Shape.prototype.rotateY(this.pointA.x, this.pointA.y, xr, yr, rDeg);
+    var xNewB = Shape.prototype.rotateX(this.pointB.x, this.pointB.y, xr, yr, rDeg);
+    var yNewB = Shape.prototype.rotateY(this.pointB.x, this.pointB.y, xr, yr, rDeg);
+    this.pointA.x = xNewA;
+    this.pointA.y = yNewA;
+    this.pointB.x = xNewB;
+    this.pointB.y = yNewB;
+
+    this.draw(gridObject);
+};
+
+Line.prototype.isEqual = function(lineObject) {
+    if(this.pointA.isEqual(lineObject.pointA) && this.pointB.isEqual(lineObject.pointB)) {
+        if(this.startArrow === lineObject.startArrow && this.endArrow === lineObject.endArrow) {
+            return true;
+        }
+    }
+    return false;
+};
